@@ -1,0 +1,30 @@
+[
+	["form_seed", "seed"],
+	["form_version", "version"],
+	["form_yendor", "amuletObtained"],
+	["form_depth", "depth"],
+	
+	["form_ankh", "ankhsUsed"],
+	["form_food", "foodEaten"],
+	["form_piranhas", "priranhas"],
+	["form_upgrades", "upgradesUsed"],
+	["form_enemies", "enemiesSlain"],
+	["form_maxdepth", "maxDepth"],
+	["form_sneakattacks", "sneakAttacks"],
+	["form_thrownweaponassists", "thrownAssists"],
+	["form_potions", "potionsCooked"],
+	["form_nokill", "qualifiedForNoKilling"],
+	["form_score", "score"],
+	
+	["form_class", "hero.class"],
+	["form_subclass", "hero.subClass"],
+	["form_gold", "gold"],
+	["form_hp", "hero.HP"],
+	["form_shield", "hero.htboost"],
+	["form_maxhp", "hero.HT"],
+	["form_strength", "hero.STR"],
+	["form_attack", "hero.attackSkill"],
+	["form_defense", "hero.defenseSkill"],
+	["form_level", "hero.lvl"],
+	["form_exp", "hero.exp"]
+]

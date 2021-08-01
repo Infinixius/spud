@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;700&display=swap');
+
+body {
+	font-family: 'Titillium Web', sans-serif;
+}
+
+h1 {
+	font-family: 'Titillium Web', sans-serif;
+}
+
+code {
+	background-color: #999999;
+	border-radius: 3px;
+}
+
+.divider {
+	border-top: 3px solid #bbb;
+}
+
+.divider_transparent {
+	border-top: 2px solid #bbb;
+}
+
+#secret {
+	opacity: 0.1;
+}
