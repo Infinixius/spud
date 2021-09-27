@@ -13,6 +13,14 @@ You can find it at [https://infinixius.github.io/spud](https://infinixius.github
 - **Mac** - `Library/Application Support/Shattered Pixel Dungeon/`
 - **Linux** - `.shatteredpixel/shattered-pixel-dungeon/`
 
+### How do I edit my inventory with this?
+
+Inventory editing is a bit convoluted at the moment. After importing a save, scroll down to the Inventory section and you'll see a list of items.
+
+The first box is the ID of the item, not the name. For example, if you wanted a Wand of Lighting, set it to `wands.WandOfLightning`. If you wanted a Battle Axe, set it to `weapon.melee.BattleAxe`. A potion of healing would be `potions.PotionOfHealing`, so on and so forth. You can view all the items in the game [here](https://github.com/00-Evan/shattered-pixel-dungeon/tree/master/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items).
+
+The second box is the quantity of the item, and the third is the level.
+
 ### How am I suppose to get my save file on iOS?
 
 iOS is naturally a very locked down operating system so unless you're jailbroken, good luck.
@@ -59,10 +67,6 @@ Challenges are stored in a "bitmask". Here's a list of all challenges along with
 Essentially, if you wanted to enable Swarm Intelligence and Forbidden Runes, you would want to add 16 and 64 to get 80. If you only wanted Into Darkness, you would set the challenge to 32. If you wanted to enable every challenge, you would use 511, so on and so forth.
 
 Even I don't know how to extract challenge data from a bitmask, but I do plan on implementing a much easier way to modify challenges in the future when I figure out how they work.
-
-### How do I edit my inventory with this?
-
-This hasn't been implemented yet, but an inventory editor is definitely my next priority after fixing the desktop issue.
 
 ### How does this even work?
 

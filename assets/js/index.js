@@ -30,6 +30,35 @@ function load() {
 			eval("document.getElementById('"+x[0]+"').value = saveFile."+x[1])
 		}
 	}
+
+	for (const element of Array.from(document.getElementsByClassName("inventoryitem"))) {
+		element.remove()
+	}
+
+	for (const item of saveFile.hero.inventory) {
+		let itemElement = document.createElement("div")
+		let typeElement = document.createElement("input")
+		let quantityElement = document.createElement("input")
+		let levelElement = document.createElement("input")
+		let removeButtonElement = document.createElement("button")
+
+		itemElement.classList.add("inventoryitem")
+		
+		typeElement.value = item.__className.replace("com.shatteredpixel.shatteredpixeldungeon.items.", "")
+		quantityElement.type = "number"
+		quantityElement.value = item.quantity
+		levelElement.type = "number"
+		levelElement.value = item.level
+		removeButtonElement.innerText = "Remove"
+		removeButtonElement.onclick = function() { removeButtonElement.parentElement.remove() }
+
+		itemElement.appendChild(typeElement)
+		itemElement.appendChild(quantityElement)
+		itemElement.appendChild(levelElement)
+		itemElement.appendChild(removeButtonElement)
+
+		document.getElementById("inventoryeditor").appendChild(itemElement)
+	}
 }
 
 function save() {
@@ -41,6 +70,21 @@ function save() {
 		} else {
 			eval("saveFile."+x[1]+" = document.getElementById('"+x[0]+"').value")
 		}
+	}
+
+	for (const item of saveFile.hero.inventory) {
+		delete saveFile.hero.inventory[item]
+	}
+
+	for (const element of [Array.from(document.getElementsByClassName("inventoryitem"))]) {
+		saveFile.hero.inventory.push({
+			cursedKnown: false,
+			quantity: element.children[1].value, // quantity
+			levelKnown: false,
+			cursed: false,
+			level: 0,
+			__className: "com.shatteredpixel.shatteredpixeldungeon.items." + element.children[0].value // quantity
+		})
 	}
 }
 
@@ -85,6 +129,11 @@ document.getElementById("form_reset").onclick = function() {
 	for (x of document.getElementsByTagName("input")){
 		x.value = ""
 	}
+
+	for (const element of Array.from(document.getElementsByClassName("inventoryitem"))) {
+		element.remove()
+	}
+
 	status("Reset all values. Waiting")
 }
 
@@ -119,6 +168,31 @@ document.getElementById("secret").onclick = function() {
 		audio.pause()
 		audio.currentTime = 0
 	}
+}
+
+document.getElementById("inventoryadd").onclick = function() {
+	let itemElement = document.createElement("div")
+	let typeElement = document.createElement("input")
+	let quantityElement = document.createElement("input")
+	let levelElement = document.createElement("input")
+	let removeButtonElement = document.createElement("button")
+
+	itemElement.classList.add("inventoryitem")
+	
+	typeElement.value = "Item ID"
+	quantityElement.type = "number"
+	quantityElement.value = 0
+	levelElement.type = "number"
+	levelElement.value = 0
+	removeButtonElement.innerText = "Remove"
+	removeButtonElement.onclick = function() { removeButtonElement.parentElement.remove() }
+
+	itemElement.appendChild(typeElement)
+	itemElement.appendChild(quantityElement)
+	itemElement.appendChild(levelElement)
+	itemElement.appendChild(removeButtonElement)
+
+	document.getElementById("inventoryeditor").appendChild(itemElement)
 }
 
 // initalization

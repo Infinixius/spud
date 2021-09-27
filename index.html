@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<h1>spud - a shattered pixel dungeon save editor</h1>
-		<p>Save editor for the game <a href="https://github.com/00-Evan/shattered-pixel-dungeon">Shattered Pixel Dungeon</a>, a roguelike dungeon crawler with pixel graphics. Please note that nobody except you is responsible for any harm you cause to your save or device, and you should backup your saves before using this tool anyway. Please note that this only supports game.dat editing (as of now), this is NOT a level editor.</p>
+		<p>Save editor for the game <a href="https://github.com/00-Evan/shattered-pixel-dungeon">Shattered Pixel Dungeon</a>, a roguelike dungeon crawler with pixel graphics. Please note that nobody except you is responsible for any harm you cause to your save or device, and you should backup your saves before using this tool anyway. Please note that this only supports game.dat editing (as of now), this is NOT a level editor. <b>Read the FAQ <a href="https://github.com/Infinixius/spud#FAQ">here!</a></b></p>
 		<p>Made with <3 by <a href="https://infinixius.github.io">infinixius</a>. Leave a star on <a href="https://github.com/infinixius/spud">GitHub</a>!<br>
 		<p>Pixel Dungeon made by <a href="https://watabou.itch.io/">Watabou</a>. Shattered Pixel Dungeon made by <a href="https://github.com/00-Evan">00-Evan</a>.</p>
 		
@@ -173,80 +173,15 @@
 		
 		<hr class="divider">
 		<div>
-			<h2>Frequently Asked Questions</h2>
-			
-			<h3>Where are the save files on desktop?</h3>
-			
-			- <b>Windows</b> - AppData/Roaming/.shatteredpixel/Shattered Pixel Dungeon<br>
-			- <b>Windows XP</b> - Application Data/.shatteredpixel/Shattered Pixel Dungeon/<br>
-			- <b>Mac</b> - Library/Application Support/Shattered Pixel Dungeon/<br>
-			- <b>Linux</b> - .shatteredpixel/shattered-pixel-dungeon/<br>
-			
-			<h3>How am I suppose to get my save file on iOS?</h3>
-			
-			iOS is naturally a very locked down operating system so unless you're jailbroken, good luck.
-			<br>
-			If you are jailbroken, I'm sure you could find a way to get access to app data through a file manager of some sort.
-			<br><br>
-			I don't own any iOS devices so take this with a grain of salt.
-			
-			<h3>How am I suppose to get my save file on Android?</h3>
-			
-			Unfortunately, you are going to need root access to access the game's directory.
-			<br>
-			You can find many root tutorials online for every device, model, or version possible. Unless you're really desperate, I wouldn't recommend rooting your device for the sole purpose of editing your save as you run the risk of bricking your phone or voiding your warranty.
-			<br><br>
-			Once you've got a rooted phone, download yourself a file explorer that supports root access, and head to <code>data/data/com.shatteredpixel.shatteredpixeldungeon</code> and look for a game.dat file.
-			<br><br>
-			Another idea I had would be to mod the game's APK itself to allow you to export the save files, but I'm not experienced in Android development and don't even know if this would be possible. If it is possible I think it's be really cool for someone to make that one day or even for the developer to implement it themselves!
-			<br><br>
-			You could also try ADB to access the game's directory without root using <code>adb shell</code> or <code>adb backup</code>, but I'm not sure if this works.
-
-			<h3>On Android, my save doesn't show up in-game after downloading it here.</h3>
-			
-			First off, make sure it's in the proper directory (in the same folder as the depth.dat files).
-			<br><br>
-			If that doesn't work, then it's most likely a permissions issue.
-			<br>
-			For me, setting the game.dat file's permissions to this worked:
-			<br>
-			- <b>Owner</b> - u0_a958 (10958) Shattered Pixel Dungeon<br>
-			- <b>Group</b> - u0_a958 (10958) Shattered Pixel Dungeon<br>
-			- <b>Mode</b> - rw------- (0600) <i>(Or set Owner to Read and Write and everything else to none)</i><br>
-			- <b>SELinux Context</b> - u:object_r:app_data_file:s0:c190,c259,c512,c768
-			
-			<h3>How do I edit challenges?</h3>
-			
-			Unfortunately, it's a bit complicated.
-			<br>
-			Challenges are stored in a "bitmask". Here's a list of all challenges along with their numerical id:
-			<br>
-			- <b>On Diet</b> - 1<br>
-			- <b>Faith is my Armor</b> - 2<br>
-			- <b>Pharmacophobia</b> - 4<br>
-			- <b>Barren Land</b> - 8<br>
-			- <b>Swarm Intelligence</b> - 16<br>
-			- <b>Into Darkness</b> - 32<br>
-			- <b>Forbidden Runes</b> - 64<br>
-			- <b>Hostile Champions</b> - 128<br>
-			- <b>Badder Bosses</b> - 256<br>
-			<br>
-
-			Essentially, if you wanted to enable Swarm Intelligence and Forbidden Runes, you would want to add 16 and 64 to get 80. If you only wanted Into Darkness, you would set the challenge to 32. If you wanted to enable every challenge, you would use 511, so on and so forth.
-			<br><br>
-			Even I don't know how to extract challenge data from a bitmask, but I do plan on implementing a much easier way to modify challenges in the future when I figure out how they work.
-
-			<h3>How do I edit my inventory with this?</h3>
-
-			This hasn't been implemented yet, but an inventory editor is definitely my next priority after fixing the desktop issue.
-
-			<h3>How does this even work?</h3>
-
-			The only reason this is even possible is thanks to the geniuses who work on <a href="https://www.npmjs.com/package/browserify">browserify</a> and more specifically <a href="https://www.npmjs.com/package/browserify-zlib">browserify-zlib</a>.
-			<br><br>
-			Essentially, use Node.js' zlib module (from browserify-zlib) and use <code>gzip</code> and <code>gunzip</code> to mimic the game reading and writing save files. Then just throw the JSON from the unzipped save into a couple of HTML inputs and boom.
+			<h2>Inventory</h2>
+			<button id="inventoryadd">Add</button>
+			<div id="inventoryeditor">
+			</div>
 		</div>
 		<p id="secret">(╯°□°）╯︵ ┻━┻</p>
+
+
+
 		<script src="assets/js/index.js"></script>
 	</body>
 </html>

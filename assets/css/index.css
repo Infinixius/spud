@@ -2,6 +2,25 @@
 
 body {
 	font-family: 'Titillium Web', sans-serif;
+	background-color:rgb(14, 14, 14);
+	color:white;
+}
+
+a {
+	color: #999;
+}
+
+input, button {
+	background-color: transparent;
+	color: white;
+	
+	border-radius: 3px;
+	border-color: rgb(255,255,255, 0.4);
+
+	-webkit-appearance: none;
+  	margin: 0;
+
+	-moz-appearance: textfield;
 }
 
 h1 {
@@ -9,7 +28,6 @@ h1 {
 }
 
 code {
-	background-color: #999999;
 	border-radius: 3px;
 }
 
