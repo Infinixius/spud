@@ -72,9 +72,9 @@ function save() {
 		}
 	}
 
-	for (const item of saveFile.hero.inventory) {
-		delete saveFile.hero.inventory[item]
-	}
+	saveFile.hero.inventory = []
+
+	console.log(saveFile.hero.inventory)
 
 	for (const element of Array.from(document.getElementsByClassName("inventoryitem"))) {
 		saveFile.hero.inventory.push({
@@ -82,7 +82,7 @@ function save() {
 			quantity: element.children[1].value, // quantity
 			levelKnown: false,
 			cursed: false,
-			level: 0,
+			level: element.children[2].value,
 			__className: "com.shatteredpixel.shatteredpixeldungeon.items." + element.children[0].value // quantity
 		})
 	}
