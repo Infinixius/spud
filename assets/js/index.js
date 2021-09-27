@@ -76,7 +76,7 @@ function save() {
 		delete saveFile.hero.inventory[item]
 	}
 
-	for (const element of [Array.from(document.getElementsByClassName("inventoryitem"))]) {
+	for (const element of Array.from(document.getElementsByClassName("inventoryitem"))) {
 		saveFile.hero.inventory.push({
 			cursedKnown: false,
 			quantity: element.children[1].value, // quantity
