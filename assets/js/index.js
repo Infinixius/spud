@@ -74,18 +74,18 @@ function save() {
 
 	saveFile.hero.inventory = []
 
-	console.log(saveFile.hero.inventory)
-
 	for (const element of Array.from(document.getElementsByClassName("inventoryitem"))) {
 		saveFile.hero.inventory.push({
 			cursedKnown: false,
 			quantity: element.children[1].value, // quantity
 			levelKnown: false,
 			cursed: false,
-			level: element.children[2].value,
-			__className: "com.shatteredpixel.shatteredpixeldungeon.items." + element.children[0].value // quantity
+			level: element.children[2].value, // level
+			__className: "com.shatteredpixel.shatteredpixeldungeon.items." + element.children[0].value // item name
 		})
 	}
+
+	console.log(saveFile.hero.inventory)
 }
 
 // handle file uploads
@@ -102,6 +102,8 @@ saveFileInput.addEventListener("change", function(event) {
 		try {
 			if (!document.getElementById("form_gzip").checked) {
 				saveFile = zlib.gunzipSync(buffer)
+			} else {
+				saveFile = buffer
 			}
 		} catch (error) {
 			if (error.message == "incorrect header check") {
@@ -110,6 +112,8 @@ saveFileInput.addEventListener("change", function(event) {
 			return status("Error: Failed to unpack. Waiting")
 		}
 		
+		console.log(saveFile)
+
 		try { saveFile = JSON.parse(saveFile) } catch (error) {
 			console.error(error)
 			showError(error)
