@@ -4,6 +4,9 @@ Online save editor for the game [Shattered Pixel Dungeon](https://github.com/00-
 
 You can find it at [https://infinixius.github.io/spud](https://infinixius.github.io/spud)!
 
+![image](https://user-images.githubusercontent.com/68125679/135179631-7fc570df-fd9a-409a-9a3c-6b715cc4b333.png)
+![image](https://user-images.githubusercontent.com/68125679/135179638-4073daa5-5cc9-432a-a440-305b4851dfed.png)
+
 ## FAQ
 
 ### Where are the save files on desktop?
