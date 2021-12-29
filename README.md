@@ -5,7 +5,10 @@ Online save editor for the game [Shattered Pixel Dungeon](https://github.com/00-
 You can find it at [https://infinixius.github.io/spud](https://infinixius.github.io/spud)!
 
 ![image](https://user-images.githubusercontent.com/68125679/135179631-7fc570df-fd9a-409a-9a3c-6b715cc4b333.png)
-![image](https://user-images.githubusercontent.com/68125679/135179638-4073daa5-5cc9-432a-a440-305b4851dfed.png)
+![image](https://user-images.githubusercontent.com/68125679/135179831-e708669b-dbf2-4926-b155-91ff36c0248e.png)
+![image](https://user-images.githubusercontent.com/68125679/135179853-9c8ac4e2-3f63-42e7-800d-b51164758e73.png)
+![image](https://user-images.githubusercontent.com/68125679/135179868-ad6222da-c694-4639-b1ad-ab60a604beac.png)
+
 
 ## FAQ
 
