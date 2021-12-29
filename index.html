@@ -34,13 +34,21 @@
 			<label>Leave data ungzipped: </label>
 			<input type="checkbox" id="form_gzip">
 			<br>
+			<small>If this is enabled while loading a save or downloading a save, the data will not be GZipped or Un-GZipped, which will treat it as raw JSON data. <b>This option MUST be ticked when downloading saves if you're playing the desktop version of the game!</b></b></small>
+			<br>
+
+			<label>Use HJSON format: </label>
+			<input type="checkbox" id="form_hjson" checked>
+			<br>
+			<small>Every version over v1.1.0 uses a new JSON format called HJSON, which is not compatible with older versions. If you're using a version of Shattered older than v1.1.0, leave this unchecked. Otherwise, leave this enabled.</small>
+			<br><br>
 				
 			<label>Save file: </label>
 			<input type="file" id="form_file">
 			<br>
 			
 			<button type="button" id="form_save">Download</button>
-			<button type="button" id="form_reset">Reset</button>
+			<button type="button" id="form_reset">Reset</button><br>
 		</div>
 		
 		<hr class="divider">
@@ -61,7 +69,7 @@
 			
 			<label>Depth: </label>
 			<input type="number" id="form_depth"></input>
-			<br>
+			<br><br>
 		</div>
 		
 		<hr class="divider">
@@ -110,7 +118,7 @@
 			
 			<label>Score: </label>
 			<input type="number" id="form_score"></input>
-			<small>(total gold collected)</small><br>
+			<small>(total gold collected)</small><br><br>
 		</div>
 		
 		<hr class="divider">
@@ -138,7 +146,7 @@
 				<option value="WARDEN">Warden</option>
 				<option value="SNIPER">Sniper</option>
 			</select>
-			<br>
+			<br><br>
 			
 			<label>Gold: </label>
 			<input type="number" id="form_gold"></input>
@@ -174,7 +182,7 @@
 			
 			<label>EXP: </label>
 			<input type="number" id="form_exp"></input>
-			<br>
+			<br><br>
 		</div>
 		
 		<hr class="divider">

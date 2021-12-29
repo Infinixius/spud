@@ -4,3 +4,4 @@
 window.zlib = require("zlib")
 window.buffer = require("buffer")
 window.filesaver = require("file-saver")
+window.HJSON = require("hjson")

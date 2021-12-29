@@ -1,6 +1,8 @@
 const zlib = window.zlib
 const Buffer = window.buffer.Buffer
 const filesaver = window.filesaver
+const HJSON = window.HJSON
+
 var audio = new Audio("assets/music.mp3")
 var saveFileInput = document.getElementById("form_file")
 var saveFile
@@ -101,23 +103,37 @@ saveFileInput.addEventListener("change", function(event) {
 		
 		try {
 			if (!document.getElementById("form_gzip").checked) {
-				saveFile = zlib.gunzipSync(buffer)
+				saveFile = zlib.gunzipSync(buffer).toString()
 			} else {
-				saveFile = buffer
+				saveFile = buffer.toString()
 			}
 		} catch (error) {
 			if (error.message == "incorrect header check") {
 				showError("Error: Failed to gunzip/ungzip the file. You likely didn't upload a correct save file, please upload game.dat")
-			} else { showError(error) }
-			return status("Error: Failed to unpack. Waiting")
+			} else {
+				showError(error)
+				return status("Error: Failed to unpack. Waiting")
+			}
+			
 		}
 		
 		console.log(saveFile)
 
-		try { saveFile = JSON.parse(saveFile) } catch (error) {
-			console.error(error)
-			showError(error)
-			return status("Failed to read unpacked data. Waiting.")
+		if (!document.getElementById("form_hjson").checked) {
+			try { saveFile = JSON.parse(saveFile) } catch (error) {
+				console.error(error)
+				showError(error)
+				return status("Failed to read unpacked data. Waiting.")
+			}
+		} else {
+			saveFile = saveFile.replaceAll("class ", "class_") // fixes an issue where spaces are not allowed in HJSON keys
+			try { saveFile = HJSON.parse(saveFile) } catch (error) {
+				console.error(error)
+				showError(error)
+				return status("Failed to read unpacked data. Waiting.")
+			}
+			console.log("hjson unpacked")
+			console.log(saveFile)
 		}
 		
 		status("Successfully read save. Waiting")
@@ -146,8 +162,15 @@ document.getElementById("form_save").onclick = function() {
 		return status("You haven't imported a save file yet! Waiting")
 	}
 	save()
-	let buffer = Buffer.from(JSON.stringify(saveFile))
-	status("Downloading..")
+
+	if (!document.getElementById("form_hjson").checked) {
+		var buffer = Buffer.from(JSON.stringify(saveFile))
+	} else {
+		var buffer = Buffer.from(HJSON.stringify(saveFile).replaceAll("class_", "class "))
+	}
+
+	status("Zipping...")
+	
 	try {
 		if (!document.getElementById("form_gzip").checked) {
 			buffer = zlib.gzipSync(buffer)
@@ -157,9 +180,9 @@ document.getElementById("form_save").onclick = function() {
 		showError(error)
 		return status("Failed to gzip data. Waiting.")
 	}
-	
-	console.log(buffer.toString())
+
 	// download file
+	status("Downloading..")
 	var file = new File([buffer], "game.dat", {type: "application/octet-stream;charset=utf-8"})
 	filesaver.saveAs(file)
 	status("Downloaded. Waiting")
