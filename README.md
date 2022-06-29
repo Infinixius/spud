@@ -2,7 +2,7 @@
 
 Online save editor for the game [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon), a roguelike dungeon crawler with pixel graphics.
 
-You can find it at [https://infinixius.github.io/spud](https://infinixius.github.io/spud)!
+You can find it at [https://infinixi.us/spud/](https://infinixi.us/spud/)!
 
 ![image](https://user-images.githubusercontent.com/68125679/135179631-7fc570df-fd9a-409a-9a3c-6b715cc4b333.png)
 ![image](https://user-images.githubusercontent.com/68125679/135179831-e708669b-dbf2-4926-b155-91ff36c0248e.png)
