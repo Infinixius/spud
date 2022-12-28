@@ -1,3 +1,7 @@
+## ARCHIVED: I no longer have any interest in working on this. You are welcome to fork and continue development.
+
+---
+
 # spud
 
 Online save editor for the game [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon), a roguelike dungeon crawler with pixel graphics.
