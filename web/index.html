@@ -1,14 +1,100 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="./index.css">
+		<title>spud</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+
+		<meta name="description" content="A save editor for Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.">
+		<meta name="keywords" content="editor, save-editor, save editor, dungeoncrawler, dungeon crawler, roguelike, rogue-like, pixeldungeon, pixel-dungeon, shatteredpixeldungeon, shattered pixel dungeon, shattered-pixel-dungeon">
+		<meta name="author" content="infinixius">
+
+		<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
+		<link rel="icon" href="favicon.ico" type="./favicon.ico"/>
+
+		<link rel="stylesheet" href="./css/index.css">
 	</head>
 	<body>
-		<div class="background background_small"></div>
-		<div class="background background_big"></div>
-		<div class="background background_gradient"></div>
+		<div class="background" id="background_small"></div>
+		<div class="background" id="background_big"></div>
+		<div class="background" id="background_gradient"></div>
 
-		<script src="./js/index.js"></script>
+		<div id="main">
+			<h1>spud</h1>
+			<p>
+				Save editor for the game Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.
+				Please note that nobody except you is responsible for any harm you cause to your save or device,
+				and you should backup your saves before using this tool anyway.
+				Please note that this only supports game.dat editing (as of now), this is NOT a level editor.
+				Read the FAQ here!
+			</p>
+
+			<hr>
+
+			<noscript>
+				<img class="icon bigicon" src="./assets/icons/error.png">
+				<b id="noscript_error">This website requires JavaScript. Please enable it and refresh.</b>
+				<hr>
+			</noscript>
+
+			<div class="section" id="section_meta">
+				<label>Save file: </label>
+				<input type="file" id="form_file" accept=".dat,.json">
+
+				<button id="form_reset">reset</button>
+				<button id="form_download">download</button>
+
+				<br>
+			</div>
+
+			<hr>
+
+			<div id="noupload_overlay" class="noupload_overlay_enable">
+				<div class="section" id="section_game">
+					<h2>Game</h2>
+	
+					<img class="icon" src="./assets/icons/seed.png">
+					<label>Seed:</label>
+					<input disabled type="text" id="form_game_seed" placeholder="Seed">
+	
+					<img class="icon" src="./assets/icons/version.png">
+					<label>Version:</label>
+					<input disabled class="smaller" type="text" id="form_game_version" placeholder="833">
+					
+					<img class="icon" src="./assets/icons/depth.png">
+					<label>Depth:</label>
+					<input disabled class="smaller" type="text" id="form_game_current_depth" placeholder="1">
+					<br>
+				</div>
+	
+				<hr>
+	
+				<div class="section" id="section_hero">
+					<h2>Hero</h2>
+	
+					<img class="icon" src="./assets/icons/health.png">
+					<label>Health:</label>
+					<input disabled class="smaller" type="text" id="form_hero_hp" placeholder="20">
+					<label>/</label>
+					<input disabled class="smaller" type="text" id="form_hero_maxhp" placeholder="20">
+	
+					<br>
+	
+					<img class="icon" src="./assets/icons/gold.png">
+					<label>Gold:</label>
+					<input disabled class="smaller" type="text" id="form_hero_gold" placeholder="0">
+				</div>
+			</div>
+		</div>
+
+		<a id="musicflip">(╯°□°）╯︵ ┻━┻</a>
+
+		<script src="./js/lib/pako.min.js"></script>
+
 		<script src="./js/background.js"></script>
+		<script src="./js/data.js"></script>
+		<script src="./js/form.js"></script>
+		<script src="./js/save_file.js"></script>
+		<script src="./js/index.js"></script>
 	</body>
 </html>
