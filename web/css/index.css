@@ -27,6 +27,10 @@ body {
 	vertical-align: middle;
 }
 
+.mediumicon {
+	width: 2em;
+}
+
 .bigicon {
 	width: 2.5em;
 }
@@ -74,24 +78,34 @@ body {
 	left: 0;
 }
 
-#noscript_error {
+#error_text {
 	color: red;
 	font-size: 1.5em;
 	vertical-align: middle;
 }
 
+#warning_text {
+	color: #e6bf00;
+	font-size: 1.25em;
+	vertical-align: middle;
+}
+
+#warning {
+	display: none;
+}
+
 
 /* Form */
+
+.rightbuttons {
+	float: right;
+}
 
 .noupload_overlay_enable > input {
 	filter: blur(0.075em);
 	opacity: 0.5;
 	pointer-events: none;
 	user-select: none;
-}
-
-#section_meta > #form_download, #form_reset {
-	float: right;
 }
 
 .smaller {

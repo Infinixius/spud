@@ -1,0 +1,53 @@
+.popup_background {
+	z-index: 1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	background-color: #0000008f;
+}
+
+.popup {
+	z-index: 2;
+	position: absolute;
+	width: 30em;
+	height: 35em;
+	padding: 0.5em;
+
+	/* center */
+	top: 50%;
+	transform: translateY(-50%);
+
+	background-color: #0a0a0af1;
+}
+
+.popup > h2 {
+	margin: 0;
+	padding-right: 1em;
+}
+
+.popup > textarea {
+	width: 98%;
+	height: 83%;
+	resize: none;
+}
+
+#editor { 
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+#popup_editjson_json {
+	background-color: transparent;
+	font-family: monospace;
+  	font-size: 1.25em;
+
+	white-space: pre;
+	overflow-wrap: normal;
+	overflow-x: scroll;
+}

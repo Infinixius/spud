@@ -17,8 +17,10 @@ SAVE_FILE_INPUT.addEventListener("change", function(event) {
 			console.log("ungzipped save data")
 			var json = JSON.parse(ungzipped_string)
 			console.log("parsed save data")
+			console.log(json)
 			
 			SAVE_FILE = json
+			clearForm()
 			deserializeFormJSON()
 
 			document.querySelectorAll("input").forEach(input => input.disabled = false)
@@ -26,6 +28,7 @@ SAVE_FILE_INPUT.addEventListener("change", function(event) {
 		} catch (err) {
 			console.log("failed to read file!")
 			console.error(err)
+			show_warning("Failed to read save file. Check browser console for details.")
 		}
 	}
 	

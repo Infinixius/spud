@@ -13,6 +13,7 @@
 		<link rel="icon" href="favicon.ico" type="./favicon.ico"/>
 
 		<link rel="stylesheet" href="./css/index.css">
+		<link rel="stylesheet" href="./css/popup.css">
 	</head>
 	<body>
 		<div class="background" id="background_small"></div>
@@ -33,7 +34,7 @@
 
 			<noscript>
 				<img class="icon bigicon" src="./assets/icons/error.png">
-				<b id="noscript_error">This website requires JavaScript. Please enable it and refresh.</b>
+				<b id="error_text">This website requires JavaScript. Please enable it and refresh.</b>
 				<hr>
 			</noscript>
 
@@ -41,10 +42,16 @@
 				<label>Save file: </label>
 				<input type="file" id="form_file" accept=".dat,.json">
 
-				<button id="form_reset">reset</button>
-				<button id="form_download">download</button>
+				<button class="rightbuttons" id="form_reset">reset</button>
+				<button class="rightbuttons" id="form_download">download</button>
+				<button class="rightbuttons" id="form_editjson">edit json</button>
 
 				<br>
+
+				<div id="warning">
+					<img class="icon mediumicon" src="./assets/icons/warning.png">
+					<b id="warning_text"></b>
+				</div>
 			</div>
 
 			<hr>
@@ -53,17 +60,29 @@
 				<div class="section" id="section_game">
 					<h2>Game</h2>
 	
-					<img class="icon" src="./assets/icons/seed.png">
-					<label>Seed:</label>
-					<input disabled type="text" id="form_game_seed" placeholder="Seed">
+					<div>
+						<img class="icon" src="./assets/icons/seed.png">
+						<label>Seed:</label>
+						<input disabled type="text" id="form_game_seed" placeholder="Seed">
+					</div>
 	
-					<img class="icon" src="./assets/icons/version.png">
-					<label>Version:</label>
-					<input disabled class="smaller" type="text" id="form_game_version" placeholder="833">
+					<div>
+						<img class="icon" src="./assets/icons/version.png">
+						<label>Version:</label>
+						<input disabled class="smaller" type="text" id="form_game_version" placeholder="833">
+					</div>
 					
-					<img class="icon" src="./assets/icons/depth.png">
-					<label>Depth:</label>
-					<input disabled class="smaller" type="text" id="form_game_current_depth" placeholder="1">
+					<div>
+						<img class="icon" src="./assets/icons/depth.png">
+						<label>Depth:</label>
+						<input disabled class="smaller" type="text" id="form_game_current_depth" placeholder="1">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/amulet.png">
+						<label>Obtained the Amulet of Yendor:</label>
+						<input disabled type="checkbox" id="form_game_amuletobtained" placeholder="1">
+					</div>
 					<br>
 				</div>
 	
@@ -72,11 +91,29 @@
 				<div class="section" id="section_hero">
 					<h2>Hero</h2>
 	
-					<img class="icon" src="./assets/icons/health.png">
-					<label>Health:</label>
-					<input disabled class="smaller" type="text" id="form_hero_hp" placeholder="20">
-					<label>/</label>
-					<input disabled class="smaller" type="text" id="form_hero_maxhp" placeholder="20">
+					<div>
+						<img class="icon" src="./assets/icons/health.png">
+						<label>Health:</label>
+						<input disabled class="smaller" type="text" id="form_hero_hp" placeholder="20">
+						<label>/</label>
+						<input disabled class="smaller" type="text" id="form_hero_maxhp" placeholder="20">
+					</div>
+					
+					<div>
+						<img class="icon" src="./assets/icons/strength.png">
+						<label>Strength:</label>
+						<input disabled class="smaller" type="text" id="form_hero_strength" placeholder="10">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/attack_skill.png">
+						<label>Attack:</label>
+						<input disabled class="smaller" type="text" id="form_hero_attack" placeholder="5">
+
+						<img class="icon" src="./assets/icons/defense_skill.png">
+						<label>Defense:</label>
+						<input disabled class="smaller" type="text" id="form_hero_defense" placeholder="5">
+					</div>
 	
 					<br>
 	
@@ -86,7 +123,6 @@
 				</div>
 			</div>
 		</div>
-
 		<a id="musicflip">(╯°□°）╯︵ ┻━┻</a>
 
 		<script src="./js/lib/pako.min.js"></script>
@@ -94,6 +130,7 @@
 		<script src="./js/background.js"></script>
 		<script src="./js/data.js"></script>
 		<script src="./js/form.js"></script>
+		<script src="./js/popup.js"></script>
 		<script src="./js/save_file.js"></script>
 		<script src="./js/index.js"></script>
 	</body>

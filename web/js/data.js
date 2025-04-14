@@ -5,10 +5,15 @@ const JSON_FORM_MAP = {
 	"form_game_version": "version",
 	"form_game_current_depth": "depth",
 	// "form_game_max_depth": "maxDepth",
+	"form_game_amuletobtained": "amuletObtained",
 
 	"form_hero_hp": "hero.HP",
 	"form_hero_maxhp": "hero.HT",
-	"form_hero_gold": "gold"
+	"form_hero_gold": "gold",
+	"form_hero_strength": "hero.STR",
+
+	"form_hero_attack": "hero.attackSkill",
+	"form_hero_defense": "hero.defenseSkill",
 }
 
 const RINGS = [
