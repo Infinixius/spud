@@ -117,3 +117,24 @@ body {
 	color: transparent;
 	width: 6em;
 }
+
+table, th, td {
+	border: 1px solid rgb(255, 255, 255);
+	background-color: red;
+}
+
+th, td {
+	padding: 0.5rem;
+}
+
+.item_icon {
+	background-image: url("../assets/images/items.png");
+	image-rendering: pixelated;
+	width: 16px;
+	height: 16px;
+	background-size: 256px 512px;
+	/* background-position: -80px; */
+
+	/* filter: drop-shadow(1px 1px 0 rgb(255, 255, 255)) 
+	drop-shadow(-1px -1px 0 rgb(255, 255, 255)); */
+}

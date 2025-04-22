@@ -1,9 +1,25 @@
+const JSON_FORM_MAP = {
+	"form_game_seed": "seed",
+	"form_game_version": "version",
+	"form_game_current_depth": "depth",
+	// "form_game_max_depth": "maxDepth",
+	"form_game_amuletobtained": "amuletObtained",
+
+	"form_hero_hp": "hero.HP",
+	"form_hero_maxhp": "hero.HT",
+	"form_hero_gold": "gold",
+	"form_hero_strength": "hero.STR",
+
+	"form_hero_attack": "hero.attackSkill",
+	"form_hero_defense": "hero.defenseSkill",
+}
+
 // Updates all form values with the values from SAVE_FILE
 const deserializeFormJSON = () => {
 	Object.keys(JSON_FORM_MAP).forEach(key => {
 		try {
 			const formElement = document.querySelector(`#${key}`)
-			
+
 			// We have to use eval because it supports periods (ex: "hero.HP")
 			eval(`formElement.value = SAVE_FILE.${JSON_FORM_MAP[key]}`)
 
