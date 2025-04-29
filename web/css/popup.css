@@ -11,9 +11,11 @@
 
 .popup {
 	z-index: 2;
-	position: absolute;
+	/* popups should follow the screen */
+	position: fixed;
 	width: 30em;
 	height: 35em;
+	max-width: 75%;
 	padding: 0.5em;
 
 	/* center */
@@ -43,6 +45,16 @@
 }
 
 #popup_editjson_json {
+	background-color: transparent;
+	font-family: monospace;
+  	font-size: 1.25em;
+
+	white-space: pre;
+	overflow-wrap: normal;
+	overflow-x: scroll;
+}
+
+#popup_edititemjson_json {
 	background-color: transparent;
 	font-family: monospace;
   	font-size: 1.25em;

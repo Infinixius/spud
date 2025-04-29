@@ -32,3 +32,32 @@ const popup_editjson_save_onclick = () => {
 	deserializeFormJSON()
 	remove_popup("editjson")
 }
+
+const popup_edititemjson_cancel_onclick = () => {
+	remove_popup("edititemjson")
+}
+
+const popup_edititemjson_save_onclick = () => {
+	let json_text = document.querySelector("#popup_edititemjson_json").value
+	let element_id = document.querySelector("#popup_edititemjson_json").dataset.element_id
+	let element = document.querySelector(`#${element_id}`)
+
+	try {
+		let json = JSON.parse(json_text)
+		const item_id = json["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("items.", "").replace("$Seed" , "").toLowerCase()
+
+		element.querySelector(".form_inventory_generic_icon").style = get_item_sprite(item_id)
+		console.log(item_id)
+		element.querySelector(".form_inventory_generic_name").innerText = ITEM_ID_TO_NAME[item_id]
+		element.querySelector(".form_inventory_generic_level").value = json.level
+		element.querySelector(".form_inventory_generic_quantity").value = json.quantity
+		element.querySelector(".form_inventory_generic_cursed").checked = json.cursed
+
+		element.dataset.json = JSON.stringify(json)
+	} catch (err) {
+		console.error(err)
+		show_warning(`Failed to parse custom JSON.`)
+	}
+
+	remove_popup("edititemjson")
+}

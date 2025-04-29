@@ -7,11 +7,16 @@ const JSON_FORM_MAP = {
 
 	"form_hero_hp": "hero.HP",
 	"form_hero_maxhp": "hero.HT",
-	"form_hero_gold": "gold",
+
 	"form_hero_strength": "hero.STR",
 
 	"form_hero_attack": "hero.attackSkill",
 	"form_hero_defense": "hero.defenseSkill",
+
+	"form_hero_gold": "gold",
+
+	"form_hero_level": "hero.lvl",
+	"form_hero_experience": "hero.exp"
 }
 
 // Updates all form values with the values from SAVE_FILE
@@ -33,6 +38,8 @@ const deserializeFormJSON = () => {
 			show_warning("Failed to deserialize save file. Check browser console for details.")
 		}
 	})
+
+	derserialize_inventory()
 }
 
 // Updates SAVE_FILE with values from the form
@@ -48,6 +55,8 @@ const serializeFormJSON = () => {
 			}
 		}
 	})
+
+	serialize_inventory()
 }
 
 // Clear all form inputs
@@ -59,10 +68,12 @@ const clearForm = () => {
 			document.querySelector(`#${key}`).checked = false
 		}
 	})
-	document.querySelectorAll("input").forEach(input => input.disabled = true)
+
+	reset_inventory()
+
+	document.querySelectorAll("input").forEach(input => {input.disabled = true; input.value = ""; input.checked = false;})
 	document.querySelectorAll("button").forEach(input => input.disabled = true)
 	document.querySelector("#form_file").disabled = false
-
 	document.querySelector("#warning").style.display = "none"
 }
 

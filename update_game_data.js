@@ -12,9 +12,10 @@ const game_version_req = fs.readFileSync("./shattered-pixel-dungeon/build.gradle
 const game_version = game_version_req.match(/appVersionCode = (.*)/)[1]
 console.log(`const SUPPORTED_GAME_VERSION = ${game_version};`)
 
-const items_req = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/assets/messages/items/items.properties", "utf-8")
-const items = [...items_req.matchAll(/items\.(.*).name\=(.*)\n/g)]
 let item_ids = {} // used later
+
+const items_data = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/assets/messages/items/items.properties", "utf-8")
+const items = [...items_data.matchAll(/items\.(.*).name\=(.*)\n/g)]
 console.log(`const ITEM_ID_TO_NAME = {`)
 items.forEach(item => {
 	const item_id = item[1].replace(/_/g, " ")
@@ -33,11 +34,22 @@ items.forEach(item => {
 	console.log(`\t"${item_id}": "${item_name}",`)
 	item_ids[item_id] = item_name
 })
+
+const plants_data = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/assets/messages/plants/plants.properties", "utf-8")
+const plants = [...plants_data.matchAll(/(plants\..*)\$seed\.name=(.*)/g)]
+plants.forEach(plant => {
+	const item_id = plant[1].replace(/_/g, " ")
+	const item_name = plant[2]
+
+	console.log(`\t"${item_id}": "${item_name}",`)
+	item_ids[item_id] = item_name
+})
 console.log(`};`)
 
 console.log(`const xy = (x, y) => (x-1) + 16 * (y-1);`)
+console.log(`const rxy = (n) => [((n % 16) + 1), (Math.floor(n / 16) + 1)];`)
 console.log(`const SOMETHING = 0;`)
-console.log("const DARTS = 1 * 11;") // Temporary fix: https://github.com/00-Evan/shattered-pixel-dungeon/issues/2043
+console.log("const DARTS = xy(1,11);") // Temporary fix: https://github.com/00-Evan/shattered-pixel-dungeon/issues/2043
 
 const item_sprite_sheet_data = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/sprites/ItemSpriteSheet.java", "utf-8")
 const item_sprite_sheet_regex = /(private|public) static final int (.*)\s*=\s*(.*);/g
@@ -59,12 +71,12 @@ item_sprite_sheet_ids.forEach(item => {
 
 })
 
-console.log(`const ITEM_NAME_TO_SPRITE_ID = {`)
-for (const item_id of Object.keys(item_ids)) {
-	// const file = `./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/${item_id.replace(/\./g, "/")}.java`
+console.log(`const ITEM_NAME_TO_SPRITE = {`)
+Object.keys(item_ids).forEach(item_id => {
 	let item_path = item_id.replace(/\./g, "/").split("/").slice(0,-1).join("/")
 	let item_name = item_id.replace(/'S/g, "s").replace(/'/g, "").replace(/ /g, "").split(".").pop()
 
+	if (item_path.includes("plants")) return
 	fs.readdirSync(`./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/${item_path}`)
 		.filter(file => file.endsWith(".java"))
 		.forEach(file => {
@@ -72,11 +84,63 @@ for (const item_id of Object.keys(item_ids)) {
 				let data = fs.readFileSync(`./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/${item_path}/${file}`, "utf-8")
 				let spritesheet_id = data.match(/image = ItemSpriteSheet\.(.*);/)
 				if (spritesheet_id) {
-					console.log(`\t"${item_id}": "${item_sprite_sheet[spritesheet_id[1]]}",`)
+					console.log(`\t"${item_id}": ${JSON.stringify({
+						"id": spritesheet_id[1],
+						"pos": item_sprite_sheet[spritesheet_id[1]]
+					})},`)
 				} else {
-					console.log(`\t"${item_id}": "SOMETHING",`)
+					console.log(`\t"${item_id}": ${JSON.stringify({
+						"id": "SOMETHING",
+						"pos": "SOMETHING"
+					})},`)
 				}
 			}
 		})
-}
+})
+
+fs.readdirSync(`./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/plants`)
+	.filter(file => file.endsWith(".java"))
+	.forEach(file => {
+		let data = fs.readFileSync(`./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/plants/${file}`, "utf-8")
+		let spritesheet_id = data.match(/image = ItemSpriteSheet\.(.*);/)
+		if (spritesheet_id) {
+			const item_id = `plants.${spritesheet_id[1].replace("SEED_", "").toLowerCase()}`
+			console.log(`\t"${item_id}": ${JSON.stringify({
+				"id": spritesheet_id[1],
+				"pos": item_sprite_sheet[spritesheet_id[1]]
+			})},`)
+		}
+	})
+
+console.log(`};`)
+
+console.log(`const ITEM_NAME_TO_SPRITE_RECT = {`)
+const item_sprite_rect_data = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/sprites/ItemSpriteSheet.java", "utf-8")
+const item_sprite_rect_regex = /assignItemRect\((.*),(.*),(.*)\);/g
+const item_sprite_rect_ids = [...item_sprite_rect_data.matchAll(item_sprite_rect_regex)]
+item_sprite_rect_ids.forEach(item => {
+	const item_id = item[1]
+	const x = item[2].trim()
+	const y = item[3].trim()
+
+	if (item_id == "i") return // For loops, handled below
+
+	console.log(`\t"${item_id}": {x: ${x}, y: ${y}},`)
+})
+
+const item_sprite_rect_forloop_regex = /for \(int i = (.*); i < (.*)\+(.*); i\+\+\)\s*assignItemRect\(i, (.*), (.*)\);/g
+const item_sprite_rect_forloop_ids = [...item_sprite_rect_data.matchAll(item_sprite_rect_forloop_regex)]
+item_sprite_rect_forloop_ids.forEach(item => {
+	const item_id = item[1]
+	const x = item[4].trim()
+	const y = item[5].trim()
+
+	let for_loop_expanded = [...item_sprite_rect_data.matchAll(`public static final int (.*) = ${item_id}\+(.*);`)]
+	for_loop_expanded.forEach(item_fr => {
+		const item_id = item_fr[1].trim()
+
+		console.log(`\t"${item_id}": {x: ${x}, y: ${y}},`)
+	})
+})
+
 console.log(`};`)
