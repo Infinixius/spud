@@ -63,3 +63,18 @@
 	overflow-wrap: normal;
 	overflow-x: scroll;
 }
+
+#popup_additem {
+	width: auto !important;
+}
+
+#popup_additem_list {
+	display: block;
+	/* width: 50%; */
+	height: 83%;
+	overflow: scroll;
+}
+
+.popup_additem_list_item {
+	color: white;
+}

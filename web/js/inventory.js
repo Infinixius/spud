@@ -7,7 +7,9 @@ const ACTIVE_RING = document.querySelector("#form_inventory_active_ring")
 var inventory_item_counter = 0
 
 const get_item_sprite = (item_id) => {
-	// Properly return potion, scroll, and ring sprites
+	if (!ITEM_NAME_TO_SPRITE[item_id.toLowerCase()]) return get_item_sprite("bags.bag") // return default ? sprite
+
+	// TODO: Properly return potion, scroll, and ring sprites
 	const sprite_xy = eval((ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).pos)
 	const sprite_clip = ITEM_NAME_TO_SPRITE_RECT[(ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).id]
 
@@ -41,13 +43,13 @@ const derserialize_inventory = () => {
 const deserialize_inventory_items = (items, table_element) => {
 	items.forEach(item => {
 		const item_id = item["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("items.", "").replace("$Seed" , "").toLowerCase()
-		const name = ITEM_ID_TO_NAME[item_id]
+		const name = ITEM_ID_TO_NAME[item_id]?? item["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("$Seed" , "").replaceAll("..", ".")
 
 		// Because we don't specify a tbody, the browser creates one automatically
 		// see: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/tbody#not_specifying_a_body
 		let element = `<tr class="form_inventory_main_item inventory_item" id="form_inventory_generic_${inventory_item_counter++}">
 			<td>
-				<div class="item_icon" style="${get_item_sprite(item_id)}"></div>
+				<div class="item_icon form_inventory_generic_icon" style="${get_item_sprite(item_id)}"></div>
 			</td>
 			<td class="form_inventory_generic_name">${name}</td>
 			<td><input type="number" class="smaller form_inventory_generic_level" min="1" value="${item.level}"></td>
@@ -55,16 +57,16 @@ const deserialize_inventory_items = (items, table_element) => {
 			<td><input type="checkbox" class="form_inventory_generic_cursed" ${item.cursed ? "checked" : ""}></td>
 			<td>
 				<button onclick="button_editjson(this)">json</button>
-				<button>delete</button>
+				<button onclick="button_delete(this)">delete</button>
 			</td>
 		</tr>`
 
 		table_element.insertAdjacentHTML("beforeend", element)
 		table_element.lastChild.querySelector("tr").dataset.json = JSON.stringify(item)
 
-		if (item_id == "bags.velvetpouch") deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_pouch"))
-		if (item_id == "bags.scrollholder") deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_scrolls"))
-		if (item_id == "bags.potionbandolier") deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_potions"))
+		if (item_id == "bags.velvetpouch" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_pouch"))
+		if (item_id == "bags.scrollholder" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_scrolls"))
+		if (item_id == "bags.potionbandolier" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_potions"))
 	})
 }
 const deserialize_equipped_item = (item_data, element) => {
@@ -184,6 +186,37 @@ const button_editjson = (element) => {
 		})
 	}
 }
-const button_delete = () => {
+const button_delete = (element) => {
+	let tr = element.parentElement.parentElement
 
+	if (tr.classList.contains("form_inventory_active_item")) {
+		tr.querySelector(".form_inventory_generic_icon").style = ""
+		tr.querySelector(".form_inventory_generic_name").innerText = ""
+		tr.querySelector(".form_inventory_generic_level").value = 0
+		tr.querySelector(".form_inventory_generic_quantity").value = 0
+		tr.querySelector(".form_inventory_generic_cursed").checked = false
+
+		tr.dataset.json = ""
+	} else if (tr.classList.contains("form_inventory_main_item")) {
+		if (tr.parentElement.localName == "tbody") {
+			tr.parentElement.remove()
+		} else {
+			tr.remove()
+		}
+	}
 }
+
+document.querySelector("#form_inventory_main_additem").addEventListener("click", () => {
+	spawn_popup("additem").then(() => {
+		Object.keys(ITEM_ID_TO_NAME).forEach(item_id => {
+			let element = `<tr>
+				<td>
+					<div class="item_icon" style="${get_item_sprite(item_id)}"></div>
+				</td>
+				<td><a data-item_id="${item_id}" class="popup_additem_list_item" href="javascript:void(0);" onclick="popup_additem(this)">${ITEM_ID_TO_NAME[item_id]}</a></td>
+			</tr>`
+
+			document.querySelector("#popup_additem_list").insertAdjacentHTML("beforeend", element)
+		})
+	})
+})

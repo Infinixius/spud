@@ -119,6 +119,10 @@ body {
 	width: 6em;
 }
 
+.form_inventory_button {
+	float: right;
+}
+
 table, th, td {
 	border: 1px solid rgb(255, 255, 255);
 }

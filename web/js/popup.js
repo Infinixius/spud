@@ -47,7 +47,6 @@ const popup_edititemjson_save_onclick = () => {
 		const item_id = json["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("items.", "").replace("$Seed" , "").toLowerCase()
 
 		element.querySelector(".form_inventory_generic_icon").style = get_item_sprite(item_id)
-		console.log(item_id)
 		element.querySelector(".form_inventory_generic_name").innerText = ITEM_ID_TO_NAME[item_id]
 		element.querySelector(".form_inventory_generic_level").value = json.level
 		element.querySelector(".form_inventory_generic_quantity").value = json.quantity
@@ -60,4 +59,23 @@ const popup_edititemjson_save_onclick = () => {
 	}
 
 	remove_popup("edititemjson")
+}
+
+const popup_additem_cancel_onclick = () => {
+	remove_popup("additem")
+}
+
+const popup_additem = (element) => {
+	let json = {
+		"cursedKnown": false,
+		"quantity": 1,
+		"levelKnown": false,
+		"cursed": false,
+		"level": 0,
+		"__className": ITEM_ID_TO_GAME_ID[element.dataset.item_id],
+		"kept_lost": false
+	}
+
+	deserialize_inventory_items([json], document.querySelector("#form_inventory_main"))
+	remove_popup("additem")
 }

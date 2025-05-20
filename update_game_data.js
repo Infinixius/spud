@@ -71,6 +71,8 @@ item_sprite_sheet_ids.forEach(item => {
 
 })
 
+let ITEM_ID_TO_GAME_ID = {}
+
 console.log(`const ITEM_NAME_TO_SPRITE = {`)
 Object.keys(item_ids).forEach(item_id => {
 	let item_path = item_id.replace(/\./g, "/").split("/").slice(0,-1).join("/")
@@ -83,6 +85,7 @@ Object.keys(item_ids).forEach(item_id => {
 			if (file.toLowerCase().replace(".java", "") == item_name) {
 				let data = fs.readFileSync(`./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/${item_path}/${file}`, "utf-8")
 				let spritesheet_id = data.match(/image = ItemSpriteSheet\.(.*);/)
+				ITEM_ID_TO_GAME_ID[item_id] = "com.shatteredpixel.shatteredpixeldungeon.items." + item_id.split(".").slice(0,-1).join(".") + "." + file.replace(".java", "")
 				if (spritesheet_id) {
 					console.log(`\t"${item_id}": ${JSON.stringify({
 						"id": spritesheet_id[1],
@@ -144,3 +147,5 @@ item_sprite_rect_forloop_ids.forEach(item => {
 })
 
 console.log(`};`)
+
+console.log(`const ITEM_ID_TO_GAME_ID = ${JSON.stringify(ITEM_ID_TO_GAME_ID, null, 2)};`)
