@@ -24,6 +24,7 @@ SAVE_FILE_INPUT.addEventListener("change", function(event) {
 			deserializeFormJSON()
 
 			document.querySelectorAll("input").forEach(input => input.disabled = false)
+			document.querySelectorAll("select").forEach(input => input.disabled = false)
 			document.querySelectorAll("button").forEach(input => input.disabled = false)
 		} catch (err) {
 			console.log("failed to read file!")

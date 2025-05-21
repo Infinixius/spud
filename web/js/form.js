@@ -40,6 +40,11 @@ const deserializeFormJSON = () => {
 	})
 
 	derserialize_inventory()
+
+	document.querySelector("#form_hero_class").value = SAVE_FILE.hero.class
+	if (SAVE_FILE.hero.subClass !== "NONE") {
+		document.querySelector("#form_hero_class").value = SAVE_FILE.hero.subClass
+	}
 }
 
 // Updates SAVE_FILE with values from the form
@@ -57,6 +62,29 @@ const serializeFormJSON = () => {
 	})
 
 	serialize_inventory()
+
+	let new_class = document.querySelector("#form_hero_class").value
+	if (["WARRIOR", "MAGE", "ROGUE", "HUNTRESS", "DUELIST", "CLERIC"].includes(new_class)) {
+		SAVE_FILE.hero.class = new_class
+		SAVE_FILE.hero.subClass = null
+	} else {
+		SAVE_FILE.hero.subClass = new_class
+		console.log(new_class)
+
+		if (new_class == "BERSERKER" || new_class == "GLADIATOR") {
+			SAVE_FILE.hero.class = "WARRIOR"
+		} else if (new_class == "BATTLEMAGE" || new_class == "WARLOCK") {
+			SAVE_FILE.hero.class = "MAGE"
+		} else if (new_class == "ASSASSIN" || new_class == "FREERUNNER") {
+			SAVE_FILE.hero.class = "ROGUE"
+		} else if (new_class == "SNIPER" || new_class == "WARDEN") {
+			SAVE_FILE.hero.class = "HUNTRESS"
+		} else if (new_class == "CHAMPION" || new_class == "MONK") {
+			SAVE_FILE.hero.class = "DUELIST"
+		} else if (new_class == "PRIEST" || new_class == "PALADIN") {
+			SAVE_FILE.hero.class = "CLERIC"
+		}
+	}
 }
 
 // Clear all form inputs
@@ -72,6 +100,7 @@ const clearForm = () => {
 	reset_inventory()
 
 	document.querySelectorAll("input").forEach(input => {input.disabled = true; input.value = ""; input.checked = false;})
+	document.querySelectorAll("select").forEach(input => {input.disabled = true; input.value = ""})
 	document.querySelectorAll("button").forEach(input => input.disabled = true)
 	document.querySelector("#form_file").disabled = false
 	document.querySelector("#warning").style.display = "none"
