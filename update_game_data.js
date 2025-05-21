@@ -61,14 +61,17 @@ item_sprite_sheet_ids.forEach(item => {
 	const sprite_position = item[3]
 
 	if (item[1] == "public") { // Just an item
+		// if (item_sprite_sheet[item_id.trim()]) return
 		item_sprite_sheet[item_id.trim()] = sprite_position.trim()
 	} else if (item[1] == "private") { // Item category
-		if (consts_already.includes(item_id.trim())) return
+		if (consts_already.includes(item_id.trim())) {
+			console.log(`const ${item_id.trim()}_ICON = ${sprite_position};`)
+			return
+		}
 
 		consts_already.push(item_id.trim())
 		console.log(`const ${item_id.trim()} = ${sprite_position};`)
 	}
-
 })
 
 let ITEM_ID_TO_GAME_ID = {}
@@ -149,3 +152,29 @@ item_sprite_rect_forloop_ids.forEach(item => {
 console.log(`};`)
 
 console.log(`const ITEM_ID_TO_GAME_ID = ${JSON.stringify(ITEM_ID_TO_GAME_ID, null, 2)};`)
+
+console.log(`const SPRITE_ID_TO_SPRITE_ICON_POS = {`)
+item_sprite_sheet_ids.forEach(item => {
+	const item_id = item[2]
+	const sprite_position = item[3]
+
+	if (item_id.startsWith("POTION_") || item_id.startsWith("SCROLL_") || item_id.startsWith("RING_")) {
+		console.log(`\t"${item_id.trim()}": "${sprite_position.trim()}",`)
+	}
+})
+console.log(`};`)
+
+console.log(`const EXOTIC_ID_TO_REGULAR_ID = {`)
+const exotic_scroll_data = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/scrolls/exotic/ExoticScroll.java", "utf-8")
+const exotic_scroll_regex = /exoToReg\.put\((.*), (.*)\);/gm
+const exotic_potion_data = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/potions/exotic/ExoticPotion.java", "utf-8")
+const exotic_potion_regex = /exoToReg\.put\((.*), (.*)\);/gm
+const exotic_ids = [...exotic_scroll_data.matchAll(exotic_scroll_regex), ...exotic_potion_data.matchAll(exotic_potion_regex)]
+
+exotic_ids.forEach(item => {
+	const exotic = item[1].replace(".class", "").trim()
+	const regular = item[2].replace(".class", "").trim()
+
+	console.log(`\t"${exotic}": "${regular}",`)
+})
+console.log(`};`)

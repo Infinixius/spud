@@ -9,9 +9,21 @@ var inventory_item_counter = 0
 const get_item_sprite = (item_id) => {
 	if (!ITEM_NAME_TO_SPRITE[item_id.toLowerCase()]) return get_item_sprite("bags.bag") // return default ? sprite
 
-	// TODO: Properly return potion, scroll, and ring sprites
-	const sprite_xy = eval((ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).pos)
-	const sprite_clip = ITEM_NAME_TO_SPRITE_RECT[(ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).id]
+	let sprite_xy = eval((ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).pos)
+	let sprite_clip = ITEM_NAME_TO_SPRITE_RECT[(ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).id]
+	let invert = ITEM_NAME_TO_SPRITE[item_id.toLowerCase()].pos == "SOMETHING"
+
+	if (item_id.startsWith("potions.") || item_id.startsWith("scrolls.") || item_id.startsWith("rings.")) {
+		let type = item_id.split(".")[0].toUpperCase().slice(0, -1)
+		let color = SAVE_FILE[`${ITEM_ID_TO_GAME_ID[item_id].split(".").pop()}_label`] || SAVE_FILE[`${EXOTIC_ID_TO_REGULAR_ID[ITEM_ID_TO_GAME_ID[item_id].split(".").pop()]}_label`]
+
+		if (color) {
+			sprite_xy = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${type}_${color.toUpperCase()}`])
+			if (item_id.includes("exotic")) sprite_xy += 16
+			sprite_clip = ITEM_NAME_TO_SPRITE_RECT[`${type}_${color.toUpperCase()}`]
+			invert = false
+		}
+	}
 
 	let [x, y] = rxy(sprite_xy)
 	if (sprite_clip) {
@@ -26,7 +38,7 @@ const get_item_sprite = (item_id) => {
 	style_string += `background-position: -${(x * 16) - 16}px -${(y * 16) - 16}px;`
 	style_string += `width: ${clip_x}px;`
 	style_string += `height: ${clip_y}px;`
-	style_string += ITEM_NAME_TO_SPRITE[item_id.toLowerCase()].pos == "SOMETHING" ? "filter: invert(100%);" : ""
+	style_string += invert ? "filter: invert(100%);" : ""
 
 	return style_string
 }
