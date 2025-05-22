@@ -21,7 +21,6 @@ const get_item_sprite = (item_id) => {
 			sprite_xy = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`])
 			if (item_id.includes("exotic")) sprite_xy += 16
 			sprite_clip = ITEM_NAME_TO_SPRITE_RECT[`${icon_type}_${icon_color.toUpperCase()}`]
-			console.log(`${icon_type}_${icon_color.toUpperCase()}`, sprite_clip)
 			invert = false
 		}
 	}
@@ -54,7 +53,6 @@ const get_item_small_sprite = (item_id) => {
 
 			let [x, y] = rxy(pos)
 			let clip = ITEM_NAME_TO_SPRITE_RECT[`${icon_id}_ICON`] ?? {x: 8, y: 8}
-			console.log(clip)
 
 			let style_string = `background-position: -${(x * 8) - 8}px -${(y * 8) - 8}px;`
 			style_string += `width: ${clip.x}px;`
