@@ -105,6 +105,7 @@ const deserialize_inventory_items = (items, table_element) => {
 		if (item_id == "bags.velvetpouch" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_pouch"))
 		if (item_id == "bags.scrollholder" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_scrolls"))
 		if (item_id == "bags.potionbandolier" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_potions"))
+		if (item_id == "bags.magicalholster" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_holster"))
 	})
 }
 const deserialize_equipped_item = (item_data, element) => {
@@ -147,6 +148,8 @@ const serialize_inventory = () => {
 			json.inventory = serialize_sub_inventory("#form_inventory_scrolls")
 		} else if (item_id == "bags.potionbandolier") {
 			json.inventory = serialize_sub_inventory("#form_inventory_potions")
+		} else if (item_id == "bags.magicalholster") {
+			json.inventory = serialize_sub_inventory("#form_inventory_holster")
 		}
 
 		inventory.push(json)

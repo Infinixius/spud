@@ -66,8 +66,6 @@ const popup_additem_cancel_onclick = () => {
 }
 
 const popup_additem = (element) => {
-	console.log(element.dataset.item_id)
-	console.log(ITEM_ID_TO_GAME_ID[element.dataset.item_id])
 	let json = {
 		"cursedKnown": false,
 		"quantity": 1,
