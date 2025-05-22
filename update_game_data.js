@@ -157,6 +157,9 @@ item_sprite_rect_forloop_ids.forEach(item => {
 	const y = item[5].trim()
 
 	let for_loop_expanded = [...item_sprite_rect_data.matchAll(`public static final int (.*)= ${item_id}\+(.*);`)]
+	if (item_id == "BREWS") {
+		for_loop_expanded = for_loop_expanded.concat([...item_sprite_rect_data.matchAll(`public static final int (.*)= ELIXIR\+(.*);`)])
+	}
 	for_loop_expanded.forEach(item_fr => {
 		const item_id = item_fr[1].trim()
 
