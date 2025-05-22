@@ -14,13 +14,13 @@ const get_item_sprite = (item_id) => {
 	let invert = ITEM_NAME_TO_SPRITE[item_id.toLowerCase()].pos == "SOMETHING"
 
 	if (item_id.startsWith("potions.") || item_id.startsWith("scrolls.") || item_id.startsWith("rings.")) {
-		let type = item_id.split(".")[0].toUpperCase().slice(0, -1)
-		let color = SAVE_FILE[`${ITEM_ID_TO_GAME_ID[item_id].split(".").pop()}_label`] || SAVE_FILE[`${EXOTIC_ID_TO_REGULAR_ID[ITEM_ID_TO_GAME_ID[item_id].split(".").pop()]}_label`]
+		var icon_type = item_id.split(".")[0].toUpperCase().slice(0, -1)
+		var icon_color = SAVE_FILE[`${ITEM_ID_TO_GAME_ID[item_id].split(".").pop()}_label`] || SAVE_FILE[`${EXOTIC_ID_TO_REGULAR_ID[ITEM_ID_TO_GAME_ID[item_id].split(".").pop()]}_label`]
 
-		if (color) {
-			sprite_xy = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${type}_${color.toUpperCase()}`])
+		if (icon_color) {
+			sprite_xy = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`])
 			if (item_id.includes("exotic")) sprite_xy += 16
-			sprite_clip = ITEM_NAME_TO_SPRITE_RECT[`${type}_${color.toUpperCase()}`]
+			sprite_clip = ITEM_NAME_TO_SPRITE_RECT[`${icon_type}_${icon_color.toUpperCase()}`]
 			invert = false
 		}
 	}
@@ -39,10 +39,45 @@ const get_item_sprite = (item_id) => {
 	style_string += `width: ${clip_x}px;`
 	style_string += `height: ${clip_y}px;`
 	style_string += invert ? "filter: invert(100%);" : ""
+	// style_string += icon ? `" data-overlay-icon="${icon_type}_${icon_color.toUpperCase()}` : ""
 
 	return style_string
 }
 
+const get_item_small_sprite = (item_id) => {
+	if (item_id.startsWith("potions.") || item_id.startsWith("scrolls.") || item_id.startsWith("rings.")) {
+		let icon_id = ITEM_NAME_TO_SPRITE[item_id].icon
+
+		if (icon_id && SPRITE_ID_TO_SPRITE_ICON_POS[icon_id]) {
+			let pos = eval(SPRITE_ID_TO_SPRITE_ICON_POS[icon_id].replace("+", "_ICON+"))
+
+			let [x, y] = rxy(pos)
+
+			let style_string = `background-position: -${(x * 8) - 8}px -${(y * 8) - 8}px;`
+
+			return style_string
+		} else {
+			return "display: none;"
+		}
+		// var icon_type = item_id.split(".")[0].toUpperCase().slice(0, -1)
+		// var icon_color = SAVE_FILE[`${ITEM_ID_TO_GAME_ID[item_id].split(".").pop()}_label`] || SAVE_FILE[`${EXOTIC_ID_TO_REGULAR_ID[ITEM_ID_TO_GAME_ID[item_id].split(".").pop()]}_label`]
+
+		// console.log(icon_type, icon_color)
+		// if (icon_color) {
+		// 	let iconpos = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`].replace("+", "_ICON+"))
+		// 	console.log(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`])
+
+		// 	let [x, y] = r8xy(iconpos)
+		// 	// if (item_id.includes("exotic")) y += 8
+
+		// 	return `background-position: -${(x * 8) - 8}px -${(y * 8) - 8}px; width: 8px; height: 8px;`
+		// }
+	} else {
+		return "display: none;"
+	}
+}
+
+// TODO: see what happens when you try to deserialize an item not in data.js
 const derserialize_inventory = () => {
 	if (SAVE_FILE.hero.weapon) deserialize_equipped_item(SAVE_FILE.hero.weapon, ACTIVE_WEAPON)
 	if (SAVE_FILE.hero.armor) deserialize_equipped_item(SAVE_FILE.hero.armor, ACTIVE_ARMOR)
@@ -62,6 +97,7 @@ const deserialize_inventory_items = (items, table_element) => {
 		let element = `<tr class="form_inventory_main_item inventory_item" id="form_inventory_generic_${inventory_item_counter++}">
 			<td>
 				<div class="item_icon form_inventory_generic_icon" style="${get_item_sprite(item_id)}"></div>
+				<div class="item_small_icon" style="${get_item_small_sprite(item_id)}"></div>
 			</td>
 			<td class="form_inventory_generic_name">${name}</td>
 			<td><input type="number" class="smaller form_inventory_generic_level" min="1" value="${item.level}"></td>
@@ -224,6 +260,7 @@ document.querySelector("#form_inventory_main_additem").addEventListener("click",
 			let element = `<tr>
 				<td>
 					<div class="item_icon" style="${get_item_sprite(item_id)}"></div>
+					<div class="item_small_icon" style="${get_item_small_sprite(item_id)}"></div>
 				</td>
 				<td><a data-item_id="${item_id}" class="popup_additem_list_item" href="javascript:void(0);" onclick="popup_additem(this)">${ITEM_ID_TO_NAME[item_id]}</a></td>
 			</tr>`

@@ -130,6 +130,7 @@ table, th, td {
 th, td {
 	padding: 0.5rem;
 	text-transform: capitalize;
+	position: relative;
 }
 
 .item_icon {
@@ -143,4 +144,16 @@ th, td {
 	display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.item_small_icon {
+	background-image: url("../assets/images/item_icons.png");
+	image-rendering: pixelated;
+
+	position: absolute;
+	top: 0.4rem;
+	right: 0.1rem;
+	width: 8px;
+	height: 8px;
+	scale: 2;
 }
