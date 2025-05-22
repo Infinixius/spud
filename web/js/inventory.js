@@ -21,6 +21,7 @@ const get_item_sprite = (item_id) => {
 			sprite_xy = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`])
 			if (item_id.includes("exotic")) sprite_xy += 16
 			sprite_clip = ITEM_NAME_TO_SPRITE_RECT[`${icon_type}_${icon_color.toUpperCase()}`]
+			console.log(`${icon_type}_${icon_color.toUpperCase()}`, sprite_clip)
 			invert = false
 		}
 	}
@@ -52,26 +53,17 @@ const get_item_small_sprite = (item_id) => {
 			let pos = eval(SPRITE_ID_TO_SPRITE_ICON_POS[icon_id].replace("+", "_ICON+"))
 
 			let [x, y] = rxy(pos)
+			let clip = ITEM_NAME_TO_SPRITE_RECT[`${icon_id}_ICON`] ?? {x: 8, y: 8}
+			console.log(clip)
 
 			let style_string = `background-position: -${(x * 8) - 8}px -${(y * 8) - 8}px;`
+			style_string += `width: ${clip.x}px;`
+			style_string += `height: ${clip.y}px;`
 
 			return style_string
 		} else {
 			return "display: none;"
 		}
-		// var icon_type = item_id.split(".")[0].toUpperCase().slice(0, -1)
-		// var icon_color = SAVE_FILE[`${ITEM_ID_TO_GAME_ID[item_id].split(".").pop()}_label`] || SAVE_FILE[`${EXOTIC_ID_TO_REGULAR_ID[ITEM_ID_TO_GAME_ID[item_id].split(".").pop()]}_label`]
-
-		// console.log(icon_type, icon_color)
-		// if (icon_color) {
-		// 	let iconpos = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`].replace("+", "_ICON+"))
-		// 	console.log(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`])
-
-		// 	let [x, y] = r8xy(iconpos)
-		// 	// if (item_id.includes("exotic")) y += 8
-
-		// 	return `background-position: -${(x * 8) - 8}px -${(y * 8) - 8}px; width: 8px; height: 8px;`
-		// }
 	} else {
 		return "display: none;"
 	}

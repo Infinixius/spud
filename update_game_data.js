@@ -126,6 +126,7 @@ console.log(`};`)
 console.log(`const ITEM_NAME_TO_SPRITE_RECT = {`)
 const item_sprite_rect_data = fs.readFileSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/sprites/ItemSpriteSheet.java", "utf-8")
 const item_sprite_rect_regex = /assignItemRect\((.*),(.*),(.*)\);/g
+const icon_sprite_rect_regex = /assignIconRect\((.*),(.*),(.*)\);/g
 const item_sprite_rect_ids = [...item_sprite_rect_data.matchAll(item_sprite_rect_regex)]
 item_sprite_rect_ids.forEach(item => {
 	const item_id = item[1]
@@ -137,6 +138,17 @@ item_sprite_rect_ids.forEach(item => {
 	console.log(`\t"${item_id}": {x: ${x}, y: ${y}},`)
 })
 
+const icon_sprite_rect_ids = [...item_sprite_rect_data.matchAll(icon_sprite_rect_regex)]
+icon_sprite_rect_ids.forEach(item => {
+	const item_id = item[1].trim()
+	const x = item[2].trim()
+	const y = item[3].trim()
+
+	if (item_id == "i") return // For loops
+
+	console.log(`\t"${item_id}_ICON": {x: ${x}, y: ${y}},`)
+})
+
 const item_sprite_rect_forloop_regex = /for \(int i = (.*); i < (.*)\+(.*); i\+\+\)\s*assignItemRect\(i, (.*), (.*)\);/g
 const item_sprite_rect_forloop_ids = [...item_sprite_rect_data.matchAll(item_sprite_rect_forloop_regex)]
 item_sprite_rect_forloop_ids.forEach(item => {
@@ -144,7 +156,7 @@ item_sprite_rect_forloop_ids.forEach(item => {
 	const x = item[4].trim()
 	const y = item[5].trim()
 
-	let for_loop_expanded = [...item_sprite_rect_data.matchAll(`public static final int (.*) = ${item_id}\+(.*);`)]
+	let for_loop_expanded = [...item_sprite_rect_data.matchAll(`public static final int (.*)= ${item_id}\+(.*);`)]
 	for_loop_expanded.forEach(item_fr => {
 		const item_id = item_fr[1].trim()
 
