@@ -128,6 +128,12 @@ table, th, td {
 	border: 1px solid rgb(255, 255, 255);
 }
 
+.form_inventory_container {
+	display: block;
+	max-width: 100%;
+	overflow-y: scroll;
+}
+
 th, td {
 	padding: 0.5rem;
 	text-transform: capitalize;

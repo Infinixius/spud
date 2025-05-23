@@ -26,9 +26,9 @@
 				Save editor for the game Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.<br><br>
 				
 				Please note that nobody except you is responsible for any harm you cause to your save or device.
-				<b>Backup your saves before using this tool.</b> Also keep in mind that this only works for Shattered Pixel Dungeon,
-				the vanilla game or any other forks do not work (for now). If you ever need help with anything, you can find me on 
-				the <a target="_blank" href="https://discord.gg/KBfMN8X">PD Discord server.</a>
+				<b>Backup your saves before using this tool.</b> Also keep in mind that this only works for Shattered Pixel Dungeon.
+				The vanilla game or any other forks do not work (for now). If you ever need help with anything, have a suggestion, or
+				want to report a bug, you can find me on the <a target="_blank" href="https://discord.gg/KBfMN8X">PD Discord server.</a>
 				
 				<br><br>
 				Read the FAQ <a target="_blank" href="https://github.com/infinixius/spud?tab=readme-ov-file#faq">here.</a> •
@@ -186,204 +186,216 @@
 				<div class="section" id="section_inventory">
 					<h2>Inventory</h2>
 
-					<table class="inventory" id="form_inventory_active">
-						<colgroup>
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 25%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-						 </colgroup>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Level</th>
-							<th>Quantity</th>
-							<th>Enchant</th>
-							<th>Cursed</th>
-							<th>Actions</th>
-						</tr>
-						<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_weapon">
-							<td><div class="item_icon form_inventory_generic_icon" style="background-position: -16px -0px; width: 14px; height: 14px;"></div></td>
-							<td class="form_inventory_generic_name">&nbsp;</td>
-							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
-							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
-							<td><select class="form_inventory_generic_enchant"></select></td>
-							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
-							<td>
-								<button onclick="button_editjson(this)">json</button>
-								<button onclick="button_delete(this)">delete</button>
-							</td>
-						</tr>
-						<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_armor">
-							<td><div class="item_icon form_inventory_generic_icon" style="background-position: -32px -0px; width: 14px; height: 12px;"></div></td>
-							<td class="form_inventory_generic_name">&nbsp;</td>
-							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
-							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
-							<td><select class="form_inventory_generic_enchant"></select></td>
-							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
-							<td>
-								<button onclick="button_editjson(this)">json</button>
-								<button onclick="button_delete(this)">delete</button>
-							</td>
-						</tr>
-						<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_artifact">
-							<td><div class="item_icon form_inventory_generic_icon" style="background-position: -96px -0px; width: 15px; height: 15px;"></div></td>
-							<td class="form_inventory_generic_name">&nbsp;</td>
-							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
-							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
-							<td><select class="form_inventory_generic_enchant"></select></td>
-							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
-							<td>
-								<button onclick="button_editjson(this)">json</button>
-								<button onclick="button_delete(this)">delete</button>
-							</td>
-						</tr>
-						<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_artifactorring">
-							<td><div class="item_icon form_inventory_generic_icon" style="background-position: -0px -0px; width: 8px; height: 13px;"></div></td>
-							<td class="form_inventory_generic_name">&nbsp;</td>
-							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
-							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
-							<td><select class="form_inventory_generic_enchant"></select></td>
-							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
-							<td>
-								<button onclick="button_editjson(this)">json</button>
-								<button onclick="button_delete(this)">delete</button>
-							</td>
-						</tr>
-						<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_ring">
-							<td><div class="item_icon form_inventory_generic_icon" style="background-position: -80px -0px; width: 8px; height: 10px;"></div></td>
-							<td class="form_inventory_generic_name">&nbsp;</td>
-							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
-							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
-							<td><select class="form_inventory_generic_enchant"></select></td>
-							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
-							<td>
-								<button onclick="button_editjson(this)">json</button>
-								<button onclick="button_delete(this)">delete</button>
-							</td>
-						</tr>
-					</table>
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_active">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							 </colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_weapon">
+								<td><div class="item_icon form_inventory_generic_icon" style="background-position: -16px -0px; width: 14px; height: 14px;"></div></td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_armor">
+								<td><div class="item_icon form_inventory_generic_icon" style="background-position: -32px -0px; width: 14px; height: 12px;"></div></td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_artifact">
+								<td><div class="item_icon form_inventory_generic_icon" style="background-position: -96px -0px; width: 15px; height: 15px;"></div></td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_artifactorring">
+								<td><div class="item_icon form_inventory_generic_icon" style="background-position: -0px -0px; width: 8px; height: 13px;"></div></td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_ring">
+								<td><div class="item_icon form_inventory_generic_icon" style="background-position: -80px -0px; width: 8px; height: 10px;"></div></td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+						</table>
+					</div>
 					
 					<br>
 
 					<button class="form_inventory_button" id="form_inventory_main_additem">Add Item</button>
 					<br><br>
-					<table class="inventory" id="form_inventory_main">
-						<colgroup>
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 25%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-						 </colgroup>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Level</th>
-							<th>Quantity</th>
-							<th>Enchant</th>
-							<th>Cursed</th>
-							<th>Actions</th>
-						</tr>
-					</table>
+
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_main">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
 					
 					<h3>Velvet Pouch</h3>
 
-					<table class="inventory" id="form_inventory_pouch">
-						<colgroup>
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 25%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-						 </colgroup>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Level</th>
-							<th>Quantity</th>
-							<th>Enchant</th>
-							<th>Cursed</th>
-							<th>Actions</th>
-						</tr>
-					</table>
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_pouch">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
 
 					<h3>Scroll Holder</h3>
 
-					<table class="inventory" id="form_inventory_scrolls">
-						<colgroup>
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 25%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-						 </colgroup>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Level</th>
-							<th>Quantity</th>
-							<th>Enchant</th>
-							<th>Cursed</th>
-							<th>Actions</th>
-						</tr>
-					</table>
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_scrolls">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
 
 					<h3>Potion Bandolier</h3>
 
-					<table class="inventory" id="form_inventory_potions">
-						<colgroup>
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 25%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-						 </colgroup>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Level</th>
-							<th>Quantity</th>
-							<th>Enchant</th>
-							<th>Cursed</th>
-							<th>Actions</th>
-						</tr>
-					</table>
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_potions">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
 
 					<h3>Magic Holster</h3>
 
-					<table class="inventory" id="form_inventory_holster">
-						<colgroup>
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 25%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 10%;">
-						 </colgroup>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Level</th>
-							<th>Quantity</th>
-							<th>Enchant</th>
-							<th>Cursed</th>
-							<th>Actions</th>
-						</tr>
-					</table>
-				</div>
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_holster">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
 			</div>
 		</div>
 		<!-- <a id="musicflip">(╯°□°）╯︵ ┻━┻</a> -->
