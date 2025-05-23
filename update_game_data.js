@@ -76,6 +76,9 @@ item_sprite_sheet_ids.forEach(item => {
 
 let ITEM_ID_TO_GAME_ID = {}
 
+let ENCHANTABLE_ITEMS = []
+let GLYPHABLE_ITEMS = []
+
 console.log(`const ITEM_NAME_TO_SPRITE = {`)
 Object.keys(item_ids).forEach(item_id => {
 	let item_path = item_id.replace(/\./g, "/").split("/").slice(0,-1).join("/")
@@ -89,7 +92,9 @@ Object.keys(item_ids).forEach(item_id => {
 				let data = fs.readFileSync(`./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/${item_path}/${file}`, "utf-8")
 				let spritesheet_id = data.match(/image = ItemSpriteSheet\.(.*);/)
 				let spritesheet_icon_id = data.match(/icon = ItemSpriteSheet\.Icons\.(.*);/)
+
 				ITEM_ID_TO_GAME_ID[item_id] = ("com.shatteredpixel.shatteredpixeldungeon.items." + item_id.split(".").slice(0,-1).join(".") + "." + file.replace(".java", "")).replace("..", ".")
+				
 				if (spritesheet_id) {
 					console.log(`\t"${item_id}": ${JSON.stringify({
 						"id": spritesheet_id[1],
@@ -199,9 +204,19 @@ console.log(`};`)
 
 let enchantments = [
 	...fs.readdirSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/weapon/enchantments")
-		.map(file => `enchantments.${file.replace(".java", "")}`),
+		.map(file => `weapon.enchantments.${file.replace(".java", "")}`),
 	...fs.readdirSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/weapon/curses")
-		.map(file => `curses.${file.replace(".java", "")}`),
+		.map(file => `weapon.curses.${file.replace(".java", "")}`),
 ]
 
 console.log(`const ENCHANTMENTS = ${JSON.stringify(enchantments, null, 2)};`)
+
+
+let glyphs = [
+	...fs.readdirSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/armor/glyphs")
+		.map(file => `armor.glyphs.${file.replace(".java", "")}`),
+	...fs.readdirSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/armor/curses")
+		.map(file => `armor.curses.${file.replace(".java", "")}`),
+]
+
+console.log(`const GLYPHS = ${JSON.stringify(glyphs, null, 2)};`)

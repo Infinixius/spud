@@ -134,6 +134,10 @@ th, td {
 	position: relative;
 }
 
+.form_inventory_generic_enchant {
+	width: 100%;
+}
+
 .item_icon {
 	background-image: url("../assets/images/items.png");
 	image-rendering: pixelated;

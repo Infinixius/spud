@@ -76,6 +76,9 @@ const popup_additem = (element) => {
 		"__className": ITEM_ID_TO_GAME_ID[element.dataset.item_id],
 		"kept_lost": false
 	}
+	if (element.dataset.item_id.includes("armor")) {
+		json.augment = "NONE" // weird bug
+	}
 
 	deserialize_inventory_items([json], document.querySelector("#form_inventory_main"))
 	remove_popup("additem")

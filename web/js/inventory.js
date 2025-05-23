@@ -68,13 +68,35 @@ const get_item_small_sprite = (item_id) => {
 	}
 }
 
-const get_enchantments = (enchantment) => {
-	let curse_yet = false
-	return `<option value="none">None</option>` + ENCHANTMENTS.map(enchant => {
-		if (curse_yet == true) curse_yet = "already"
-		if (enchant.includes("curse") && curse_yet == false) curse_yet = true
-		return `${curse_yet == true ? "<hr>" : ""}<option value="${enchant}" ${enchant == enchantment ? "selected" : ""}>${enchant.split(".")[1]}</option>`
-	}).join("\n")
+const get_enchantments = (item_id, current_enchantment) => {
+	let output = `<option value="none" selected>None</option>`
+
+	if (item_id.includes("weapon")) {
+		ENCHANTMENTS.forEach(enchant => {
+			if (enchant.includes("curse") && !output.includes("<hr>")) {
+				output += `<hr>`
+			}
+
+			output += `<option value="${enchant}" ${enchant == current_enchantment ? "selected" : ""}>${enchant.split(".").pop()}</option>`
+		})
+	} else if (item_id.includes("armor")) {
+		GLYPHS.forEach(glyph => {
+			if (glyph.includes("curse") && !output.includes("<hr>")) {
+				output += `<hr>`
+			}
+
+			output += `<option value="${glyph}" ${glyph == current_enchantment ? "selected" : ""}>${glyph.split(".").pop()}</option>`
+		})
+	} else {
+		return `<option value="none" selected>N/A</option>`
+	}
+
+	return output
+	// return `` + ENCHANTMENTS.map(enchant => {
+	// 	if (curse_yet == true) curse_yet = "already"
+	// 	if (enchant.includes("curse") && curse_yet == false) curse_yet = true
+	// 	return `${curse_yet == true ? "<hr>" : ""}<option value="${enchant}" ${enchant == current_enchantment ? "selected" : ""}>${enchant.split(".")[1]}</option>`
+	// }).join("\n")
 }
 
 // TODO: see what happens when you try to deserialize an item not in data.js
@@ -93,7 +115,7 @@ const deserialize_inventory_items = (items, table_element) => {
 		const name = ITEM_ID_TO_NAME[item_id]?? item["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("$Seed" , "").replaceAll("..", ".")
 
 		let enchantment = item.enchantment
-		if (enchantment) { enchantment = enchantment["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.weapon.", "") } else enchantment = "none"
+		if (enchantment) { enchantment = enchantment["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.", "") } else enchantment = "none"
 		
 		// Because we don't specify a tbody, the browser creates one automatically
 		// see: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/tbody#not_specifying_a_body
@@ -105,7 +127,7 @@ const deserialize_inventory_items = (items, table_element) => {
 			<td class="form_inventory_generic_name">${name}</td>
 			<td><input type="number" class="smaller form_inventory_generic_level" min="1" value="${item.level}"></td>
 			<td><input type="number" class="smaller form_inventory_generic_quantity" min="1" value="${item.quantity}"></td>
-			<td><select class="form_inventory_generic_enchant">${get_enchantments(enchantment)}</select></td>
+			<td><select class="form_inventory_generic_enchant">${get_enchantments(item_id, enchantment)}</select></td>
 			<td><input type="checkbox" class="form_inventory_generic_cursed" ${item.cursed ? "checked" : ""}></td>
 			<td>
 				<button onclick="button_editjson(this)">json</button>
@@ -133,13 +155,17 @@ const deserialize_equipped_item = (item_data, element) => {
 	const cursed = item_data.cursed
 
 	let enchantment = item_data.enchantment
-		if (enchantment) { enchantment = enchantment["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.weapon.", "") } else enchantment = "none"
+		if (enchantment) { enchantment = enchantment["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.", "") } else enchantment = "none"
+		if (enchantment == "none" && item_data.glyph) {
+			enchantment = item_data.glyph["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.", "")
+		}
 
 	element.dataset.json = JSON.stringify(item_data)
 	element.querySelector(".form_inventory_generic_name").innerText = name
 	element.querySelector(".form_inventory_generic_level").value = level
 	element.querySelector(".form_inventory_generic_quantity").value = quantity
-	element.querySelector(".form_inventory_generic_enchant").value = enchantment
+	element.querySelector(".form_inventory_generic_enchant").innerHTML = get_enchantments(item_id, enchantment)
+	element.querySelector(".form_inventory_generic_enchant").value = enchantment ?? glyph
 	element.querySelector(".form_inventory_generic_cursed").checked = cursed
 
 	let [x, y] = rxy(sprite_xy)
@@ -218,8 +244,13 @@ const serialize_table_row = (element) => {
 	if (form_enchantment == "none") {
 		json.enchantment = undefined
 	} else {
-		json.enchantment = {}
-		json.enchantment["__className"] = "com.shatteredpixel.shatteredpixeldungeon.items.weapon." + form_enchantment
+		if (json["__className"].includes("weapon")) {
+			json.enchantment = {}
+			json.enchantment["__className"] = "com.shatteredpixel.shatteredpixeldungeon.items." + form_enchantment
+		} else if (json["__className"].includes("armor")) {
+			json.glyph = {}
+			json.glyph["__className"] = "com.shatteredpixel.shatteredpixeldungeon.items." + form_enchantment
+		}
 	}
 
 	element.dataset.json = JSON.stringify(json)

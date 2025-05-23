@@ -5,7 +5,7 @@ const show_warning = (message) => {
 }
 
 document.querySelectorAll(".form_inventory_generic_enchant").forEach(input => {
-	input.innerHTML = get_enchantments()
+	input.innerHTML = get_enchantments("none")
 })
 
 clearForm()
