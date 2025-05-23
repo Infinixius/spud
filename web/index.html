@@ -23,11 +23,15 @@
 		<div id="main">
 			<h1>spud</h1>
 			<p>
-				Save editor for the game Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.
-				Please note that nobody except you is responsible for any harm you cause to your save or device,
-				and you should backup your saves before using this tool anyway.
-				Please note that this only supports game.dat editing (as of now), this is NOT a level editor.
-				Read the FAQ here!
+				Save editor for the game Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.<br><br>
+				
+				Please note that nobody except you is responsible for any harm you cause to your save or device.
+				Backup your saves before using this tool.
+				
+				<br><br>
+				Read the FAQ <a target="_blank" href="https://github.com/infinixius/spud?tab=readme-ov-file#faq">here.</a> •
+				Leave a star on <a target="_blank" href="https://github.com/infinixius/spud">GitHub!</a> •
+				Play the game <a target="_blank" href="https://shatteredpixel.com/shatteredpd/">here!</a>
 			</p>
 
 			<hr>
@@ -83,6 +87,13 @@
 						<label>Obtained the Amulet of Yendor:</label>
 						<input disabled type="checkbox" id="form_game_amuletobtained">
 					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/identifyall.png">
+						<label>Identify All Items:</label>
+						<input disabled type="checkbox" id="form_game_identifyall">
+					</div>
+					
 					<br>
 				</div>
 	
@@ -157,9 +168,19 @@
 	
 					<br>
 	
-					<img class="icon" src="./assets/icons/gold.png">
-					<label>Gold:</label>
-					<input disabled class="smaller" type="number" id="form_hero_gold" placeholder="0">
+					<div>
+						<img class="icon" src="./assets/icons/gold.png">
+						<label>Gold:</label>
+						<input disabled class="smaller" type="number" id="form_hero_gold" placeholder="0">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/energy.png">
+						<label>Energy:</label>
+						<input disabled class="smaller" type="number" id="form_hero_energy" placeholder="0">
+					</div>
+	
+					<br>
 				</div>
 
 				<div class="section" id="section_inventory">
@@ -172,13 +193,15 @@
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 15%;">
+							<col span="1" style="width: 1%;">
+							<col span="1" style="width: 10%;">
 						 </colgroup>
 						<tr>
 							<th></th>
 							<th>Name</th>
 							<th>Level</th>
 							<th>Quantity</th>
+							<th>Enchant</th>
 							<th>Cursed</th>
 							<th>Actions</th>
 						</tr>
@@ -187,6 +210,7 @@
 							<td class="form_inventory_generic_name">&nbsp;</td>
 							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
 							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+							<td><select class="form_inventory_generic_enchant"></select></td>
 							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
 							<td>
 								<button onclick="button_editjson(this)">json</button>
@@ -198,6 +222,7 @@
 							<td class="form_inventory_generic_name">&nbsp;</td>
 							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
 							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+							<td><select class="form_inventory_generic_enchant"></select></td>
 							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
 							<td>
 								<button onclick="button_editjson(this)">json</button>
@@ -209,6 +234,7 @@
 							<td class="form_inventory_generic_name">&nbsp;</td>
 							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
 							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+							<td><select class="form_inventory_generic_enchant"></select></td>
 							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
 							<td>
 								<button onclick="button_editjson(this)">json</button>
@@ -220,6 +246,7 @@
 							<td class="form_inventory_generic_name">&nbsp;</td>
 							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
 							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+							<td><select class="form_inventory_generic_enchant"></select></td>
 							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
 							<td>
 								<button onclick="button_editjson(this)">json</button>
@@ -231,6 +258,7 @@
 							<td class="form_inventory_generic_name">&nbsp;</td>
 							<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
 							<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+							<td><select class="form_inventory_generic_enchant"></select></td>
 							<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
 							<td>
 								<button onclick="button_editjson(this)">json</button>
@@ -250,13 +278,15 @@
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 15%;">
+							<col span="1" style="width: 1%;">
+							<col span="1" style="width: 10%;">
 						 </colgroup>
 						<tr>
 							<th></th>
 							<th>Name</th>
 							<th>Level</th>
 							<th>Quantity</th>
+							<th>Enchant</th>
 							<th>Cursed</th>
 							<th>Actions</th>
 						</tr>
@@ -271,13 +301,15 @@
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 15%;">
+							<col span="1" style="width: 1%;">
+							<col span="1" style="width: 10%;">
 						 </colgroup>
 						<tr>
 							<th></th>
 							<th>Name</th>
 							<th>Level</th>
 							<th>Quantity</th>
+							<th>Enchant</th>
 							<th>Cursed</th>
 							<th>Actions</th>
 						</tr>
@@ -292,13 +324,15 @@
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 15%;">
+							<col span="1" style="width: 1%;">
+							<col span="1" style="width: 10%;">
 						 </colgroup>
 						<tr>
 							<th></th>
 							<th>Name</th>
 							<th>Level</th>
 							<th>Quantity</th>
+							<th>Enchant</th>
 							<th>Cursed</th>
 							<th>Actions</th>
 						</tr>
@@ -313,13 +347,15 @@
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 15%;">
+							<col span="1" style="width: 1%;">
+							<col span="1" style="width: 10%;">
 						 </colgroup>
 						<tr>
 							<th></th>
 							<th>Name</th>
 							<th>Level</th>
 							<th>Quantity</th>
+							<th>Enchant</th>
 							<th>Cursed</th>
 							<th>Actions</th>
 						</tr>
@@ -334,13 +370,15 @@
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
 							<col span="1" style="width: 1%;">
-							<col span="1" style="width: 15%;">
+							<col span="1" style="width: 1%;">
+							<col span="1" style="width: 10%;">
 						 </colgroup>
 						<tr>
 							<th></th>
 							<th>Name</th>
 							<th>Level</th>
 							<th>Quantity</th>
+							<th>Enchant</th>
 							<th>Cursed</th>
 							<th>Actions</th>
 						</tr>
