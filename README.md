@@ -1,18 +1,10 @@
-## ARCHIVED: I no longer have any interest in working on this. You are welcome to fork and continue development.
-
----
-
 # spud
 
 Online save editor for the game [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon), a roguelike dungeon crawler with pixel graphics.
 
 You can find it at [https://infinixi.us/spud/](https://infinixi.us/spud/)!
 
-![image](https://user-images.githubusercontent.com/68125679/135179631-7fc570df-fd9a-409a-9a3c-6b715cc4b333.png)
-![image](https://user-images.githubusercontent.com/68125679/135179831-e708669b-dbf2-4926-b155-91ff36c0248e.png)
-![image](https://user-images.githubusercontent.com/68125679/135179853-9c8ac4e2-3f63-42e7-800d-b51164758e73.png)
-![image](https://user-images.githubusercontent.com/68125679/135179868-ad6222da-c694-4639-b1ad-ab60a604beac.png)
-
+This is a complete rewrite of the original spud, with many more features, and a much better UI. If you want to access the original for some reason, you can find it [here](https://infinixi.us/spud/old/index.html).
 
 ## FAQ
 
@@ -21,33 +13,24 @@ You can find it at [https://infinixi.us/spud/](https://infinixi.us/spud/)!
 - **Windows** - `AppData/Roaming/.shatteredpixel/Shattered Pixel Dungeon`
 - **Windows XP** - `Application Data/.shatteredpixel/Shattered Pixel Dungeon/`
 - **Mac** - `Library/Application Support/Shattered Pixel Dungeon/`
-- **Linux** - `.shatteredpixel/shattered-pixel-dungeon/`
+- **Linux** - `~/.local/share/.shatteredpixel/shattered-pixel-dungeon`
 
-### How do I edit my inventory with this?
+### Where are the save files on Android?
 
-Inventory editing is a bit convoluted at the moment. After importing a save, scroll down to the Inventory section and you'll see a list of items.
+Unfortunately, you need root access to open the game's directory. You can find many tutorials online on how to root your device, but unless you're really desperate, I would not recommend rooting your device just to use this save editor, as you run the risk of bricking your phone or voiding the warranty.
 
-The first box is the ID of the item, not the name. For example, if you wanted a Wand of Lighting, set it to `wands.WandOfLightning`. If you wanted a Battle Axe, set it to `weapon.melee.BattleAxe`. A potion of healing would be `potions.PotionOfHealing`, so on and so forth. You can view all the items in the game [here](https://github.com/00-Evan/shattered-pixel-dungeon/tree/master/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items).
+Once you have a rooted phone, download a file explorer that supports root access (I recommend [Material Files](https://play.google.com/store/apps/details?id=me.zhanghai.android.files&hl=en)), and go to `/data/data/com.shatteredpixel.shatteredpixeldungeon`. Look for a `game.dat` file.
 
-The second box is the quantity of the item, and the third is the level.
+There are some methods to access the game's data folder without a rooted phone, but they depend on the device and Android version. Here are some I found:
+- Using `adb backup` and `adb restore`
+- Using `adb run-as`
+- Using `adb pull` and `adb push`
 
-### How am I suppose to get my save file on iOS?
+I haven't tried any of these methods, so take them with a grain of salt. Do your own research if you don't have root.
 
-iOS is naturally a very locked down operating system so unless you're jailbroken, good luck.
-If you are jailbroken, I'm sure you could find a way to get access to app data through a file manager of some sort.
+### Where are the save files on iOS?
 
-I don't own any iOS devices so take this with a grain of salt.
-
-### How am I suppose to get my save file on Android?
-
-Unfortunately, you are going to need root access to access the game's directory.
-You can find many root tutorials online for every device, model, or version possible. Unless you're really desperate, I wouldn't recommend rooting your device for the sole purpose of editing your save as you run the risk of bricking your phone or voiding your warranty.
-
-Once you've got a rooted phone, download yourself a file explorer that supports root access, and head to `data/data/com.shatteredpixel.shatteredpixeldungeon` and look for a game.dat file.
-
-Another idea I had would be to mod the game's APK itself to allow you to export the save files, but I'm not experienced in Android development and don't even know if this would be possible. If it is possible I think it's be really cool for someone to make that one day or even for the developer to implement it themselves!
-
-You could also try ADB to access the game's directory without root using `adb shell` or `adb backup`, but I'm not sure if this works. 
+I don't own any iOS devices, so I can't help you with this. It should be much easier to find the data folder with a jailbroken phone, but as with the Android advice above, I wouldn't do that with the sole intent of using this save editor.
 
 ### On Android, my save file doesn't show up in-game after downloading it here.
 
@@ -58,32 +41,31 @@ For me, setting the game.dat file's permissions to this worked:
 - **Owner** - `u0_a958 (10958) Shattered Pixel Dungeon`
 - **Group** - `u0_a958 (10958) Shattered Pixel Dungeon`
 - **Mode** - `rw------- (0600)` (Or set Owner to Read and Write and everything else to none)
-- **SELinux Context** - `u:object_r:app_data_file:s0:c190,c259,c512,c768 `
+- **SELinux Context** - `u:object_r:app_data_file:s0:c190,c259,c512,c768`
 
-### How do I edit challenges?
+### I don't see an item's properties after adding it and editing its JSON.
 
-Unfortunately, it's a bit complicated.
-Challenges are stored in a "bitmask". Here's a list of all challenges along with their numerical id:
-- **On Diet** - 1
-- **Faith is my Armor** - 2
-- **Pharmacophobia** - 4
-- **Barren Land** - 8
-- **Swarm Intelligence** - 16
-- **Into Darkness** - 32
-- **Forbidden Runes** - 64
-- **Hostile Champions** - 128
-- **Badder Bosses** - 256
+If you add an item via the save editor, and then try to edit it's JSON, none of it's specific properties will show up. You need to first add the item, download the save file, run the game, and then re-import it here, so the game can generate the properties for us.
 
-Essentially, if you wanted to enable Swarm Intelligence and Forbidden Runes, you would want to add 16 and 64 to get 80. If you only wanted Into Darkness, you would set the challenge to 32. If you wanted to enable every challenge, you would use 511, so on and so forth.
+### After adding an item, it doesn't show up in it's container.
 
-Even I don't know how to extract challenge data from a bitmask, but I do plan on implementing a much easier way to modify challenges in the future when I figure out how they work.
+This happens when you, for example, add a wand or throwable item. When you do this it'll show up in the main inventory instead of under the Magical Holster. Don't worry; when you launch the game with the updated save file, the game will sort it for us. This is just a limitation of the save editor.
 
-### How does this even work?
+### My save file is corrupted, or an error showed up.
 
-The only reason this is even possible is thanks to the geniuses who work on [browserify](https://www.npmjs.com/package/browserify) and more specifically [browserify-zlib](https://www.npmjs.com/package/browserify-zlib).
+This editor isn't perfect, and I wouldn't trust a really important save file with it. Always backup your files.
 
-Essentially, use Node.js' zlib module (from browserify-zlib) and use `gzip` and `gunzip` to mimic the game reading and writing save files. Then just throw the JSON from the unzipped save into a couple of HTML inputs and boom.
+If your save file doesn't work in the game, or the editor, I would appreciate it if you opened an issue or sent me an [e-mail](mailto:spud@infinixi.us) with the following information:
+- Game version (bottom right in the main menu)
+- Original & corrupted save file
+- Screenshot of the log (`Ctrl+Shift+I` -> console)
+  
+## License
 
-## Disclaimer
+This project is licensed under the [MIT License](https://github.com/Infinixius/spud/blob/main/LICENSE). You are free to do with the code as you please.
 
-Please note that nobody except you is responsible for any harm you cause to your save or device, and you should backup your saves before using this tool anyway.
+## Contributing
+
+Pull requests and bug reports are greatly appreciated. Please note some parts of the codebase are particularly ugly and I wouldn't blame you if you went nowhere near them. (The icon generator function and `data.js` updater come to mind.)
+
+If a new update to the game breaks the save editor (items missing, etc), clone the repository into a folder called `shattered-pixel-dungeon` and run `node update_game_data.js`. This should generate an updated `data.js` for the save editor to use. If the script still doesn't work after a new update, open an repository issue. I'll get to it eventually.
