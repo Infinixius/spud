@@ -121,6 +121,7 @@ body {
 
 .form_inventory_button {
 	float: right;
+	font-size: 1em;
 }
 
 table, th, td {

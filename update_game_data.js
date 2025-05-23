@@ -196,3 +196,12 @@ exotic_ids.forEach(item => {
 	console.log(`\t"${exotic}": "${regular}",`)
 })
 console.log(`};`)
+
+let enchantments = [
+	...fs.readdirSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/weapon/enchantments")
+		.map(file => `enchantments.${file.replace(".java", "")}`),
+	...fs.readdirSync("./shattered-pixel-dungeon/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/items/weapon/curses")
+		.map(file => `curses.${file.replace(".java", "")}`),
+]
+
+console.log(`const ENCHANTMENTS = ${JSON.stringify(enchantments, null, 2)};`)

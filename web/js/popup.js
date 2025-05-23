@@ -14,6 +14,7 @@ const spawn_popup = async (id) => {
 	document.body.insertBefore(popup, document.querySelector("#main"))
 }
 
+// TODO: Pressing "esc" should close any popup
 const remove_popup = (id) => {
 	document.querySelector(`#popup_${id}`).remove()
 	document.querySelector(".popup_background").remove()
@@ -78,4 +79,12 @@ const popup_additem = (element) => {
 
 	deserialize_inventory_items([json], document.querySelector("#form_inventory_main"))
 	remove_popup("additem")
+}
+
+const popup_extra_save_onclick = () => {
+	remove_popup("extra")
+}
+
+const popup_extra_cancel_onclick = () => {
+	remove_popup("extra")
 }

@@ -4,4 +4,8 @@ const show_warning = (message) => {
 	warning.style.display = "block"
 }
 
+document.querySelectorAll(".form_inventory_generic_enchant").forEach(input => {
+	input.innerHTML = get_enchantments()
+})
+
 clearForm()

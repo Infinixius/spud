@@ -13,10 +13,11 @@ const JSON_FORM_MAP = {
 	"form_hero_attack": "hero.attackSkill",
 	"form_hero_defense": "hero.defenseSkill",
 
-	"form_hero_gold": "gold",
-
 	"form_hero_level": "hero.lvl",
-	"form_hero_experience": "hero.exp"
+	"form_hero_experience": "hero.exp",
+
+	"form_hero_gold": "gold",
+	"form_hero_energy": "energy",
 }
 
 // Updates all form values with the values from SAVE_FILE
@@ -85,6 +86,26 @@ const serializeFormJSON = () => {
 			SAVE_FILE.hero.class = "CLERIC"
 		}
 	}
+
+	if (document.querySelector("#form_game_identifyall").checked) {
+		Object.keys(SAVE_FILE).filter(key => key.endsWith("_known")).forEach(key => {
+			SAVE_FILE[key] = true
+		})
+
+		SAVE_FILE.hero.inventory.forEach(item => {
+			if (item.cursedKnown !== undefined) item.cursedKnown = true
+			if (item.levelKnown !== undefined) item.levelKnown = true
+			if (item.curChargeKnown !== undefined) item.curChargeKnown = true
+
+			if (item.inventory) {
+				item.inventory.forEach(subItem => {
+					if (subItem.cursedKnown !== undefined) subItem.cursedKnown = true
+					if (subItem.levelKnown !== undefined) subItem.levelKnown = true
+					if (subItem.curChargeKnown !== undefined) subItem.curChargeKnown = true
+				})
+			}
+		})
+	}
 }
 
 // Clear all form inputs
@@ -104,6 +125,7 @@ const clearForm = () => {
 	document.querySelectorAll("button").forEach(input => input.disabled = true)
 	document.querySelector("#form_file").disabled = false
 	document.querySelector("#warning").style.display = "none"
+	document.querySelectorAll(".form_inventory_generic_enchant").forEach(input => input.value = "none")
 }
 
 document.querySelector("#form_reset").addEventListener("click", () => {
