@@ -4,7 +4,7 @@ Online save editor for the game [Shattered Pixel Dungeon](https://github.com/00-
 
 You can find it at [https://infinixi.us/spud/](https://infinixi.us/spud/)!
 
-This is a complete rewrite of the original spud, with many more features, and a much better UI. If you want to access the original for some reason, you can find it [here](https://infinixi.us/spud/old/index.html).
+This is a complete rewrite of the original spud from a few years ago, with many more features, and a much better UI. If you want to access the original for some reason, you can find it [here](https://infinixi.us/spud/old/index.html).
 
 ## FAQ
 
