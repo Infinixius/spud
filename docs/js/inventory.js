@@ -162,11 +162,13 @@ const reset_inventory = () => {
 		item.parentElement.remove()
 	})
 
-	document.querySelector("#form_inventory_active_weapon").querySelector(".item_icon").style = "background-position: -16px -0px; width: 14px; height: 14px;"
-	document.querySelector("#form_inventory_active_armor").querySelector(".item_icon").style = "background-position: -32px -0px; width: 14px; height: 12px;	"
-	document.querySelector("#form_inventory_active_artifact").querySelector(".item_icon").style = "background-position: -96px -0px; width: 15px; height: 15px;"
-	document.querySelector("#form_inventory_active_artifactorring").querySelector(".item_icon").style = "background-position: -0px -0px; width: 8px; height: 13px;"
-	document.querySelector("#form_inventory_active_ring").querySelector(".item_icon").style = "background-position: -80px -0px; width: 8px; height: 10px;"
+	document.querySelector("#section_inventory").querySelectorAll(".item_icon").forEach(icon => {
+		icon.style = "background-position: -16px -0px; width: 14px; height: 14px;"
+	})
+
+	document.querySelector("#section_inventory").querySelectorAll(".item_small_icon").forEach(icon => {
+		icon.style = "display: none;"
+	})
 
 	document.querySelectorAll(".form_inventory_generic_name").forEach(item => {
 		item.innerText = ""
