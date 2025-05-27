@@ -47,7 +47,7 @@ For me, setting the game.dat file's permissions to this worked:
 
 If you add an item via the save editor, and then try to edit it's JSON, none of it's specific properties will show up. You need to first add the item, download the save file, run the game, and then re-import it here, so the game can generate the properties for us.
 
-### After adding an item, it doesn't show up in it's container.
+### After adding an item, it doesn't show up in its container.
 
 This happens when you, for example, add a wand or throwable item. When you do this it'll show up in the main inventory instead of under the Magical Holster. Don't worry; when you launch the game with the updated save file, the game will sort it for us. This is just a limitation of the save editor.
 

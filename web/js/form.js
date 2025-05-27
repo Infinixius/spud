@@ -43,7 +43,7 @@ const deserializeFormJSON = () => {
 	derserialize_inventory()
 
 	document.querySelector("#form_hero_class").value = SAVE_FILE.hero.class
-	if (SAVE_FILE.hero.subClass !== "NONE") {
+	if (SAVE_FILE.hero.subClass !== "NONE" && SAVE_FILE.hero.subClass !== "" && SAVE_FILE.hero.subClass !== null) {
 		document.querySelector("#form_hero_class").value = SAVE_FILE.hero.subClass
 	}
 }

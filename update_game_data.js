@@ -267,11 +267,12 @@ ItemSpriteSheet.matchAll(/assignIconRect\((.*),(.*),(.*)\);/g)
 // Handle for loops
 ItemSpriteSheet.matchAll(/for \(int i = (.*); i < (.*)\+(.*); i\+\+\)\s*assignItemRect\(i, (.*), (.*)\);/g)
 	.forEach(item_data => {
-		const item_id = item_data[1] == "BREWS" ? "ELIXIR" : item_data[1] // Fixes a bug with elixirs
+		const item_id = item_data[1]
+		const item_id_regex = `public static final int (.*)= (${item_data[1] == "BREWS" ? "ELIXIRS|BREWS" : item_id})\+(.*);` // Fixes a bug with elixirs
 		const x = item_data[4].trim()
 		const y = item_data[5].trim()
 	
-		ItemSpriteSheet.matchAll(`public static final int (.*)= ${item_id}\+(.*);`)
+		ItemSpriteSheet.matchAll(item_id_regex)
 			.forEach(item_fr => {
 				const item_id = item_fr[1].trim()
 

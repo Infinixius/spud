@@ -36,6 +36,7 @@ const popup_editjson_save_onclick = () => {
 	let json = document.querySelector("#popup_editjson_json").value
 
 	SAVE_FILE = JSON.parse(json)
+	reset_inventory()
 	deserializeFormJSON()
 	remove_popup("editjson")
 }

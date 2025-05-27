@@ -75,15 +75,8 @@ const deserialize_equipped_item = (item_data, element) => {
 	element.querySelector(".form_inventory_generic_enchant").value = enchantment ?? glyph
 	element.querySelector(".form_inventory_generic_cursed").checked = cursed
 
-	let [x, y] = [item_schema.sprite.pos.x, item_schema.sprite.pos.y]
-	if (item_schema.sprite.clip) {
-		var [clip_x, clip_y] = [item_schema.sprite.clip.x, item_schema.sprite.clip.y]
-	} else {
-		var [clip_x, clip_y] = [16, 16]
-	}
-
-	let invert = item_schema.sprite.id == null ? "filter: invert(100%);" : ""
-	element.querySelector(".item_icon").style = `background-position: -${(x * 16) - 16}px -${(y * 16) - 16}px; width: ${clip_x}px; height: ${clip_y}px; ${invert}`
+	element.querySelector(".form_inventory_generic_icon").style = get_item_sprite(item_schema.id)
+	element.querySelector(".item_small_icon").style = get_item_small_sprite(item_schema.id)
 }
 
 const serialize_inventory = () => {
