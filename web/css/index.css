@@ -72,9 +72,9 @@ body {
 }
 
 #musicflip {
-	color: black;
+	color: #2b2b2b;
 	user-select: none;
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	left: 0;
 }
