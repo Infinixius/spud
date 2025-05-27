@@ -70,7 +70,6 @@ const serializeFormJSON = () => {
 		SAVE_FILE.hero.subClass = null
 	} else {
 		SAVE_FILE.hero.subClass = new_class
-		console.log(new_class)
 
 		if (new_class == "BERSERKER" || new_class == "GLADIATOR") {
 			SAVE_FILE.hero.class = "WARRIOR"

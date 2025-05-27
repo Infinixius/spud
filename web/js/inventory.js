@@ -6,99 +6,6 @@ const ACTIVE_RING = document.querySelector("#form_inventory_active_ring")
 
 var inventory_item_counter = 0
 
-// TODO: Move these two functions to a separate file and write comments
-const get_item_sprite = (item_id) => {
-	if (!ITEM_NAME_TO_SPRITE[item_id.toLowerCase()]) return get_item_sprite("bags.bag") // return default ? sprite
-
-	let sprite_xy = eval((ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).pos)
-	let sprite_clip = ITEM_NAME_TO_SPRITE_RECT[(ITEM_NAME_TO_SPRITE[item_id.toLowerCase()] ?? {}).id]
-	let invert = ITEM_NAME_TO_SPRITE[item_id.toLowerCase()].pos == "SOMETHING"
-
-	if (item_id.startsWith("potions.") || item_id.startsWith("scrolls.") || item_id.startsWith("rings.")) {
-		var icon_type = item_id.split(".")[0].toUpperCase().slice(0, -1)
-		var icon_color = SAVE_FILE[`${ITEM_ID_TO_GAME_ID[item_id].split(".").pop()}_label`] || SAVE_FILE[`${EXOTIC_ID_TO_REGULAR_ID[ITEM_ID_TO_GAME_ID[item_id].split(".").pop()]}_label`]
-
-		if (icon_color) {
-			sprite_xy = eval(SPRITE_ID_TO_SPRITE_ICON_POS[`${icon_type}_${icon_color.toUpperCase()}`])
-			if (item_id.includes("exotic")) sprite_xy += 16
-			sprite_clip = ITEM_NAME_TO_SPRITE_RECT[`${icon_type}_${icon_color.toUpperCase()}`]
-			invert = false
-		}
-	}
-
-	let [x, y] = rxy(sprite_xy)
-	if (sprite_clip) {
-		var [clip_x, clip_y] = [sprite_clip.x, sprite_clip.y]
-	} else {
-		var [clip_x, clip_y] = [16, 16]
-	}
-
-	let style_string = ""
-
-	// style_string += `background-image: url(./assets/items/${item_id}.png);`
-	style_string += `background-position: -${(x * 16) - 16}px -${(y * 16) - 16}px;`
-	style_string += `width: ${clip_x}px;`
-	style_string += `height: ${clip_y}px;`
-	style_string += invert ? "filter: invert(100%);" : ""
-	// style_string += icon ? `" data-overlay-icon="${icon_type}_${icon_color.toUpperCase()}` : ""
-
-	return style_string
-}
-
-const get_item_small_sprite = (item_id) => {
-	if (item_id.startsWith("potions.") || item_id.startsWith("scrolls.") || item_id.startsWith("rings.")) {
-		let icon_id = ITEM_NAME_TO_SPRITE[item_id].icon
-
-		if (icon_id && SPRITE_ID_TO_SPRITE_ICON_POS[icon_id]) {
-			let pos = eval(SPRITE_ID_TO_SPRITE_ICON_POS[icon_id].replace("+", "_ICON+"))
-
-			let [x, y] = rxy(pos)
-			let clip = ITEM_NAME_TO_SPRITE_RECT[`${icon_id}_ICON`] ?? {x: 8, y: 8}
-
-			let style_string = `background-position: -${(x * 8) - 8}px -${(y * 8) - 8}px;`
-			style_string += `width: ${clip.x}px;`
-			style_string += `height: ${clip.y}px;`
-
-			return style_string
-		} else {
-			return "display: none;"
-		}
-	} else {
-		return "display: none;"
-	}
-}
-
-const get_enchantments = (item_id, current_enchantment) => {
-	let output = `<option value="none" selected>None</option>`
-
-	if (item_id.includes("weapon")) {
-		ENCHANTMENTS.forEach(enchant => {
-			if (enchant.includes("curse") && !output.includes("<hr>")) {
-				output += `<hr>`
-			}
-
-			output += `<option value="${enchant}" ${enchant == current_enchantment ? "selected" : ""}>${enchant.split(".").pop()}</option>`
-		})
-	} else if (item_id.includes("armor")) {
-		GLYPHS.forEach(glyph => {
-			if (glyph.includes("curse") && !output.includes("<hr>")) {
-				output += `<hr>`
-			}
-
-			output += `<option value="${glyph}" ${glyph == current_enchantment ? "selected" : ""}>${glyph.split(".").pop()}</option>`
-		})
-	} else {
-		return `<option value="none" selected>N/A</option>`
-	}
-
-	return output
-	// return `` + ENCHANTMENTS.map(enchant => {
-	// 	if (curse_yet == true) curse_yet = "already"
-	// 	if (enchant.includes("curse") && curse_yet == false) curse_yet = true
-	// 	return `${curse_yet == true ? "<hr>" : ""}<option value="${enchant}" ${enchant == current_enchantment ? "selected" : ""}>${enchant.split(".")[1]}</option>`
-	// }).join("\n")
-}
-
 // TODO: see what happens when you try to deserialize an item not in data.js
 const derserialize_inventory = () => {
 	if (SAVE_FILE.hero.weapon) deserialize_equipped_item(SAVE_FILE.hero.weapon, ACTIVE_WEAPON)
@@ -111,8 +18,11 @@ const derserialize_inventory = () => {
 }
 const deserialize_inventory_items = (items, table_element) => {
 	items.forEach(item => {
-		const item_id = item["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("items.", "").replace("$Seed" , "").toLowerCase()
-		const name = ITEM_ID_TO_NAME[item_id]?? item["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("$Seed" , "").replaceAll("..", ".")
+		const item_schema = ITEMS.find(i => i.game_id == item["__className"])
+		if (!item_schema) {
+			console.warn(`Item schema not found for "${item["__className"]}" Skipping...`)
+			return
+		}
 
 		let enchantment = item.enchantment
 		if (enchantment) { enchantment = enchantment["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.", "") } else enchantment = "none"
@@ -121,13 +31,13 @@ const deserialize_inventory_items = (items, table_element) => {
 		// see: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/tbody#not_specifying_a_body
 		let element = `<tr class="form_inventory_main_item inventory_item" id="form_inventory_generic_${inventory_item_counter++}">
 			<td>
-				<div class="item_icon form_inventory_generic_icon" style="${get_item_sprite(item_id)}"></div>
-				<div class="item_small_icon" style="${get_item_small_sprite(item_id)}"></div>
+				<div class="item_icon form_inventory_generic_icon" style="${get_item_sprite(item_schema.id)}"></div>
+				<div class="item_small_icon" style="${get_item_small_sprite(item_schema.id)}"></div>
 			</td>
-			<td class="form_inventory_generic_name">${name}</td>
+			<td class="form_inventory_generic_name">${item_schema.name}</td>
 			<td><input type="number" class="smaller form_inventory_generic_level" min="1" value="${item.level}"></td>
 			<td><input type="number" class="smaller form_inventory_generic_quantity" min="1" value="${item.quantity}"></td>
-			<td><select class="form_inventory_generic_enchant">${get_enchantments(item_id, enchantment)}</select></td>
+			<td><select class="form_inventory_generic_enchant">${get_enchantments(item_schema.id, enchantment)}</select></td>
 			<td><input type="checkbox" class="form_inventory_generic_cursed" ${item.cursed ? "checked" : ""}></td>
 			<td>
 				<button onclick="button_editjson(this)">json</button>
@@ -138,17 +48,14 @@ const deserialize_inventory_items = (items, table_element) => {
 		table_element.insertAdjacentHTML("beforeend", element)
 		table_element.lastChild.querySelector("tr").dataset.json = JSON.stringify(item)
 
-		if (item_id == "bags.velvetpouch" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_pouch"))
-		if (item_id == "bags.scrollholder" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_scrolls"))
-		if (item_id == "bags.potionbandolier" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_potions"))
-		if (item_id == "bags.magicalholster" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_holster"))
+		if (item_schema.id == "bags.velvetpouch" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_pouch"))
+		if (item_schema.id == "bags.scrollholder" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_scrolls"))
+		if (item_schema.id == "bags.potionbandolier" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_potions"))
+		if (item_schema.id == "bags.magicalholster" && item.inventory) deserialize_inventory_items(item.inventory, document.querySelector("#form_inventory_holster"))
 	})
 }
 const deserialize_equipped_item = (item_data, element) => {
-	const item_id = item_data["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("items.", "")
-	const name = ITEM_ID_TO_NAME[item_id.toLowerCase()]
-	const sprite_xy = eval(ITEM_NAME_TO_SPRITE[item_id.toLowerCase()].pos)
-	const sprite_clip = ITEM_NAME_TO_SPRITE_RECT[ITEM_NAME_TO_SPRITE[item_id.toLowerCase()].id]
+	const item_schema = ITEMS.find(item => item.game_id == item_data["__className"])
 
 	const quantity = item_data.quantity
 	const level = item_data.level
@@ -161,21 +68,21 @@ const deserialize_equipped_item = (item_data, element) => {
 		}
 
 	element.dataset.json = JSON.stringify(item_data)
-	element.querySelector(".form_inventory_generic_name").innerText = name
+	element.querySelector(".form_inventory_generic_name").innerText = item_schema.name
 	element.querySelector(".form_inventory_generic_level").value = level
 	element.querySelector(".form_inventory_generic_quantity").value = quantity
-	element.querySelector(".form_inventory_generic_enchant").innerHTML = get_enchantments(item_id, enchantment)
+	element.querySelector(".form_inventory_generic_enchant").innerHTML = get_enchantments(item_schema.id, enchantment)
 	element.querySelector(".form_inventory_generic_enchant").value = enchantment ?? glyph
 	element.querySelector(".form_inventory_generic_cursed").checked = cursed
 
-	let [x, y] = rxy(sprite_xy)
-	if (sprite_clip) {
-		var [clip_x, clip_y] = [sprite_clip.x, sprite_clip.y]
+	let [x, y] = [item_schema.sprite.pos.x, item_schema.sprite.pos.y]
+	if (item_schema.sprite.clip) {
+		var [clip_x, clip_y] = [item_schema.sprite.clip.x, item_schema.sprite.clip.y]
 	} else {
 		var [clip_x, clip_y] = [16, 16]
 	}
 
-	let invert = ITEM_NAME_TO_SPRITE[item_id.toLowerCase()].pos == "SOMETHING" ? "filter: invert(100%);" : ""
+	let invert = item_schema.sprite.id == null ? "filter: invert(100%);" : ""
 	element.querySelector(".item_icon").style = `background-position: -${(x * 16) - 16}px -${(y * 16) - 16}px; width: ${clip_x}px; height: ${clip_y}px; ${invert}`
 }
 
@@ -312,6 +219,8 @@ const button_delete = (element) => {
 		tr.querySelector(".form_inventory_generic_name").innerText = ""
 		tr.querySelector(".form_inventory_generic_level").value = 0
 		tr.querySelector(".form_inventory_generic_quantity").value = 0
+		tr.querySelector(".form_inventory_generic_enchant").innerHTML = get_enchantments("none")
+		tr.querySelector(".form_inventory_generic_enchant").value = "none"
 		tr.querySelector(".form_inventory_generic_cursed").checked = false
 
 		tr.dataset.json = ""
@@ -326,13 +235,13 @@ const button_delete = (element) => {
 
 document.querySelector("#form_inventory_main_additem").addEventListener("click", () => {
 	spawn_popup("additem").then(() => {
-		Object.keys(ITEM_ID_TO_NAME).forEach(item_id => {
+		ITEMS.forEach(item_schema => {
 			let element = `<tr>
 				<td>
-					<div class="item_icon" style="${get_item_sprite(item_id)}"></div>
-					<div class="item_small_icon" style="${get_item_small_sprite(item_id)}"></div>
+					<div class="item_icon" style="${get_item_sprite(item_schema.id)}"></div>
+					<div class="item_small_icon" style="${get_item_small_sprite(item_schema.id)}"></div>
 				</td>
-				<td><a data-item_id="${item_id}" class="popup_additem_list_item" href="javascript:void(0);" onclick="popup_additem(this)">${ITEM_ID_TO_NAME[item_id]}</a></td>
+				<td><a data-item_id="${item_schema.id}" class="popup_additem_list_item" href="javascript:void(0);" onclick="popup_additem(this)">${item_schema.name}</a></td>
 			</tr>`
 
 			document.querySelector("#popup_additem_list").insertAdjacentHTML("beforeend", element)

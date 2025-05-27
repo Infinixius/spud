@@ -14,13 +14,19 @@ const spawn_popup = async (id) => {
 	document.body.insertBefore(popup, document.querySelector("#main"))
 }
 
-// TODO: Pressing "esc" should close any popup
 const remove_popup = (id) => {
 	document.querySelector(`#popup_${id}`).remove()
 	document.querySelector(".popup_background").remove()
 }
 
 /* Popup events */
+
+document.addEventListener("keydown", (e) => {
+	if (e.key == "Escape") {
+		document.querySelector(".popup_background")?.remove()
+		document.querySelector(".popup")?.remove()
+	}
+})
 
 const popup_editjson_cancel_onclick = () => {
 	remove_popup("editjson")
@@ -45,12 +51,19 @@ const popup_edititemjson_save_onclick = () => {
 
 	try {
 		let json = JSON.parse(json_text)
-		const item_id = json["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("items.", "").replace("$Seed" , "").toLowerCase()
+		let item_schema = ITEMS.find(i => i.game_id === json["__className"])
 
-		element.querySelector(".form_inventory_generic_icon").style = get_item_sprite(item_id)
-		element.querySelector(".form_inventory_generic_name").innerText = ITEM_ID_TO_NAME[item_id]
+		let enchantment = json.enchantment
+		if (enchantment) { enchantment = enchantment["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.", "") } else enchantment = "none"
+		if (enchantment == "none" && json.glyph) {
+			enchantment = json.glyph["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.", "")
+		}
+
+		element.querySelector(".form_inventory_generic_icon").style = get_item_sprite(item_schema.id)
+		element.querySelector(".form_inventory_generic_name").innerText = item_schema.name
 		element.querySelector(".form_inventory_generic_level").value = json.level
 		element.querySelector(".form_inventory_generic_quantity").value = json.quantity
+		element.querySelector(".form_inventory_generic_enchant").value = enchantment 
 		element.querySelector(".form_inventory_generic_cursed").checked = json.cursed
 
 		element.dataset.json = JSON.stringify(json)
@@ -67,13 +80,15 @@ const popup_additem_cancel_onclick = () => {
 }
 
 const popup_additem = (element) => {
+	let item = ITEMS.find(i => i.id === element.dataset.item_id)
+
 	let json = {
 		"cursedKnown": false,
 		"quantity": 1,
 		"levelKnown": false,
 		"cursed": false,
 		"level": 0,
-		"__className": ITEM_ID_TO_GAME_ID[element.dataset.item_id],
+		"__className": item.game_id,
 		"kept_lost": false
 	}
 	if (element.dataset.item_id.includes("armor")) {
