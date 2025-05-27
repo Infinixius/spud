@@ -6,12 +6,12 @@ You can find it at [https://infinixi.us/spud/](https://infinixi.us/spud/)!
 
 This is a complete rewrite of the original spud from a few years ago, with many more features, and a much better UI. If you want to access the original for some reason, you can find it [here](https://infinixi.us/spud/old/index.html).
 
-![](/web/assets/images/screenshot_1.png)
+![](/docs/assets/images/screenshot_1.png)
 
-![](/web/assets/images/screenshot_2.png)
+![](/docs/assets/images/screenshot_2.png)
 
-![](/web/assets/images/screenshot_3.png)
-![](/web/assets/images/screenshot_4.png)
+![](/docs/assets/images/screenshot_3.png)
+![](/docs/assets/images/screenshot_4.png)
 
 ## FAQ
 
