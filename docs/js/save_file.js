@@ -23,6 +23,10 @@ SAVE_FILE_INPUT.addEventListener("change", function(event) {
 			clearForm()
 			deserializeFormJSON()
 
+			if (SAVE_FILE["version"] !== SUPPORTED_GAME_VERSION) {
+				show_warning(`Save file version mismatch! Expected ${SUPPORTED_GAME_VERSION}, but got ${SAVE_FILE["version"]}. Some features may not work correctly.`)
+			}
+
 			document.querySelectorAll("input").forEach(input => input.disabled = false)
 			document.querySelectorAll("select").forEach(input => input.disabled = false)
 			document.querySelectorAll("button").forEach(input => input.disabled = false)

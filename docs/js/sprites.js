@@ -9,16 +9,12 @@ const get_item_sprite = (item_id) => {
 	let [x, y] = [0, 0]
 	let [clip_x, clip_y] = [16, 16]
 
-	console.log(item_schema)
-
 	if ((item_schema.id.startsWith("potions.") || item_schema.id.startsWith("scrolls.") || item_schema.id.startsWith("rings.")) && (!item_schema.id.includes("brews") && !item_schema.id.includes("elixir"))) {
 		var icon_type = item_schema.id.split(".")[0].toUpperCase().slice(0, -1)
 		
 		// Gets the color/icon of the ring/potion/scroll for the current save file
 		var icon_color = SAVE_FILE[`${item_schema.game_id.split(".").pop()}_label`] ||
 			SAVE_FILE[`${ITEMS.find(item => item.id == item_schema.regular_id).game_id.split(".").pop()}_label`] // Handle exotic variants
-
-			console.log(icon_color)
 
 		if (icon_color) {
 			let generic_item = GENERIC_ITEMS.find((item) => item.id == `${icon_type}_${icon_color.toUpperCase()}`)

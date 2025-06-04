@@ -187,8 +187,6 @@ const button_extra = (element) => {
 			enchant = enchant["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.items.weapon.", "")
 		}
 
-		console.log(enchant)
-
 		spawn_popup("extra").then(() => {
 			
 		})
