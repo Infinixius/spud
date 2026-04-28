@@ -84,6 +84,9 @@ const serialize_inventory = () => {
 
 	document.querySelector("#form_inventory_main").querySelectorAll(".inventory_item").forEach(item => {
 		let json = JSON.parse(serialize_table_row(item))
+		if (!json["__className"]) {
+			show_warning("Failed to save inventory (invalid item present)")
+		}
 		const item_id = json["__className"].replace("com.shatteredpixel.shatteredpixeldungeon.", "").replace("items.", "").replace("$Seed" , "").toLowerCase()
 
 		if (item_id == "bags.velvetpouch") {
