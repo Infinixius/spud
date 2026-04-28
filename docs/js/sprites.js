@@ -59,6 +59,7 @@ const get_item_small_sprite = (item_id) => {
 			let [clip_x, clip_y] = [icon.clip.x, icon.clip.y]
 
 			if (item_schema.id.startsWith("rings.")) y = 1 // Fixes a weird bug with rings
+			if (item_schema.id.includes("potions.") || item_schema.id.includes("scrolls.")) y -= 1 // incredibly lazy hotfix
 
 			let style_string = `background-position: -${(x * 8) - 8}px -${(y * 8) - 8}px;`
 			style_string += `width: ${clip_x}px;`
